@@ -15,34 +15,40 @@ function snrColor(db) {
     return 'text-red-400';
 }
 
+function statusColor(ok) {
+    return ok ? 'text-green-400' : 'text-red-400';
+}
+
 function updateDashboard(reading) {
     if (!reading) return;
 
+    // Combined status card: DSL + WAN
     const statusEl = document.getElementById('card-status');
-    statusEl.textContent = reading.status === 'Up' ? 'Verbunden' : reading.status;
-    statusEl.className = `text-xl font-bold mt-1 ${reading.status === 'Up' ? 'text-green-400' : 'text-red-400'}`;
+    const dslOk = reading.status === 'Up';
+    statusEl.textContent = `DSL: ${dslOk ? 'Up' : reading.status}`;
+    statusEl.className = `text-sm font-bold ${statusColor(dslOk)}`;
+
+    const wanEl = document.getElementById('card-wan-status');
+    const wanOk = reading.wan_status === 'Connected';
+    wanEl.textContent = `WAN: ${wanOk ? 'Up' : reading.wan_status || '--'}`;
+    wanEl.className = `text-sm font-bold ${statusColor(wanOk)}`;
 
     document.getElementById('card-uptime').textContent = formatUptime(reading.uptime);
-    document.getElementById('card-down').textContent = `${(reading.downstream_current / 1000).toFixed(1)} Mbit/s`;
-    document.getElementById('card-down-max').textContent = `Max: ${(reading.downstream_max / 1000).toFixed(1)} Mbit/s`;
-    document.getElementById('card-up').textContent = `${(reading.upstream_current / 1000).toFixed(1)} Mbit/s`;
-    document.getElementById('card-up-max').textContent = `Max: ${(reading.upstream_max / 1000).toFixed(1)} Mbit/s`;
+    const downEl = document.getElementById('card-down');
+    downEl.textContent = `${(reading.downstream_current / 1000).toFixed(1)} Mbit/s`;
+    downEl.className = 'text-lg font-bold text-green-400';
+    document.getElementById('card-down-max').textContent = `Max: ${(reading.downstream_max / 1000).toFixed(1)}`;
 
-    const snrDown = document.getElementById('card-snr-down');
-    snrDown.textContent = `${reading.downstream_snr.toFixed(1)} dB`;
-    snrDown.className = `text-xl font-bold mt-1 ${snrColor(reading.downstream_snr)}`;
+    const upEl = document.getElementById('card-up');
+    upEl.textContent = `${(reading.upstream_current / 1000).toFixed(1)} Mbit/s`;
+    upEl.className = 'text-lg font-bold text-green-400';
+    document.getElementById('card-up-max').textContent = `Max: ${(reading.upstream_max / 1000).toFixed(1)}`;
 
-    const snrUp = document.getElementById('card-snr-up');
-    snrUp.textContent = `${reading.upstream_snr.toFixed(1)} dB`;
-    snrUp.className = `text-xl font-bold mt-1 ${snrColor(reading.upstream_snr)}`;
+    document.getElementById('card-snr-down').textContent = `↓ ${reading.downstream_snr.toFixed(1)} dB`;
+    document.getElementById('card-snr-up').textContent = `↑ ${reading.upstream_snr.toFixed(1)} dB`;
 
-    document.getElementById('card-att-down').textContent = `${reading.downstream_attenuation.toFixed(1)} dB`;
-    document.getElementById('card-att-up').textContent = `${reading.upstream_attenuation.toFixed(1)} dB`;
-
-    // WAN
-    const wanEl = document.getElementById('card-wan-status');
-    wanEl.textContent = reading.wan_status === 'Connected' ? 'Verbunden' : reading.wan_status || '--';
-    wanEl.className = `text-xl font-bold mt-1 ${reading.wan_status === 'Connected' ? 'text-green-400' : 'text-red-400'}`;
+    document.getElementById('card-att-down').textContent = `↓ ${reading.downstream_attenuation.toFixed(1)} dB`;
+    document.getElementById('card-att-up').textContent = `↑ ${reading.upstream_attenuation.toFixed(1)} dB`;
 
     document.getElementById('card-external-ip').textContent = reading.external_ip || '--';
 
@@ -51,10 +57,9 @@ function updateDashboard(reading) {
     document.getElementById('card-dns').textContent = dns2 ? `${dns1}\n${dns2}` : dns1 || '--';
     document.getElementById('card-dns').style.whiteSpace = 'pre-line';
 
-    // WLAN
     const wlanParts = [];
-    if (reading.wlan_ssid_24ghz) wlanParts.push(`2.4G: ${reading.wlan_ssid_24ghz} (Ch ${reading.wlan_channel_24ghz})`);
-    if (reading.wlan_ssid_5ghz) wlanParts.push(`5G: ${reading.wlan_ssid_5ghz} (Ch ${reading.wlan_channel_5ghz})`);
+    if (reading.wlan_ssid_24ghz) wlanParts.push(`2.4G: Ch ${reading.wlan_channel_24ghz}`);
+    if (reading.wlan_ssid_5ghz) wlanParts.push(`5G: Ch ${reading.wlan_channel_5ghz}`);
     document.getElementById('card-wlan-info').textContent = wlanParts.join('\n') || '--';
     document.getElementById('card-wlan-info').style.whiteSpace = 'pre-line';
 
