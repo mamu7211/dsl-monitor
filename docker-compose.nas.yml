@@ -1,0 +1,32 @@
+services:
+  fritzbox-monitor:
+    image: ghcr.io/mamu7211/fritzbox-monitor:latest
+    ports:
+      - "8172:8080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - FRITZ_IP=${FRITZ_IP:-192.168.178.1}
+      - FRITZ_USER=${FRITZ_USER}
+      - FRITZ_PASSWORD=${FRITZ_PASSWORD}
+      - POLL_INTERVAL_MINUTES=60
+      - TZ=Europe/Berlin
+    restart: unless-stopped
+    networks:
+        - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      # HTTPS
+      - traefik.http.routers.fritzbox-monitor.rule=Host(`dsl.murrer.lan`)
+      - traefik.http.routers.fritzbox-monitor.entrypoints=websecure
+      - traefik.http.routers.fritzbox-monitor.tls=true
+      - traefik.http.services.fritzbox-monitor.loadbalancer.server.port=8080
+      # HTTP → HTTPS
+      - traefik.http.routers.fritzbox-monitor-http.rule=Host(`dsl.murrer.lan`)
+      - traefik.http.routers.fritzbox-monitor-http.entrypoints=web
+      - traefik.http.routers.fritzbox-monitor-http.middlewares=https-redirect@file
+
+networks:
+  proxy:
+    external: true
