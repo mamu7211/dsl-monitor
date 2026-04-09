@@ -48,6 +48,9 @@ async function loadCustomRange() {
 }
 
 async function fetchAndRender(from, to) {
+    const diffMs = new Date(to) - new Date(from);
+    currentRangeDays = Math.round(diffMs / 86400000);
+
     const readings = from === to
         ? await API.getReadings(from)
         : await API.getReadingsRange(from, to);
