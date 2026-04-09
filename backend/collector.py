@@ -9,9 +9,9 @@ from backend.models import DSLReading
 logger = logging.getLogger(__name__)
 
 
-def _safe_call(fc, service, action):
+def _safe_call(fc, service, action, **kwargs):
     try:
-        return fc.call_action(service, action)
+        return fc.call_action(service, action, **kwargs)
     except Exception as e:
         logger.warning("Failed to call %s.%s: %s", service, action, e)
         return {}
@@ -28,8 +28,13 @@ def collect_dsl_reading() -> DSLReading:
     info = fc.call_action("WANDSLInterfaceConfig1", "GetInfo")
     stats = fc.call_action("WANDSLInterfaceConfig1", "GetStatisticsTotal")
 
-    # Network clients
-    hosts = _safe_call(fc, "Hosts1", "GetHostNumberOfEntries")
+    # Network clients - count only active hosts
+    hosts_total = _safe_call(fc, "Hosts1", "GetHostNumberOfEntries")
+    active_count = 0
+    for i in range(hosts_total.get("NewHostNumberOfEntries", 0)):
+        host = _safe_call(fc, "Hosts1", "GetGenericHostEntry", NewIndex=i)
+        if host.get("NewActive", False):
+            active_count += 1
     wlan1 = _safe_call(fc, "WLANConfiguration1", "GetTotalAssociations")
     wlan2 = _safe_call(fc, "WLANConfiguration2", "GetTotalAssociations")
     wlan3 = _safe_call(fc, "WLANConfiguration3", "GetTotalAssociations")
@@ -64,7 +69,7 @@ def collect_dsl_reading() -> DSLReading:
         downstream_crc=stats.get("NewCRCErrors", 0),
         upstream_crc=stats.get("NewATUCCRCErrors", 0),
         # Network
-        hosts_total=hosts.get("NewHostNumberOfEntries", 0),
+        hosts_total=active_count,
         wlan_clients_24ghz=wlan1.get("NewTotalAssociations", 0),
         wlan_clients_5ghz=wlan2.get("NewTotalAssociations", 0),
         wlan_clients_guest=wlan3.get("NewTotalAssociations", 0),
