@@ -21,46 +21,64 @@
             <h1 class="text-2xl font-bold text-white">FritzBox DSL Monitor</h1>
             <p id="last-update" class="text-sm text-slate-400"></p>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">Status</div>
-            <div id="card-status" class="text-sm font-bold">--</div>
-            <div id="card-wan-status" class="text-sm font-bold">--</div>
+            <div class="flex-1 flex flex-col justify-center">
+                <div id="card-status" class="text-sm font-bold">--</div>
+                <div id="card-wan-status" class="text-sm font-bold">--</div>
+            </div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">Uptime</div>
-            <div id="card-uptime" class="text-lg font-bold">--</div>
+            <div class="flex-1 flex items-center">
+                <div id="card-uptime" class="text-lg font-bold">--</div>
+            </div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">Download</div>
-            <div id="card-down" class="text-lg font-bold">--</div>
-            <div id="card-down-max" class="text-xs text-slate-400"></div>
+            <div class="flex-1 flex items-center">
+                <div id="card-down" class="text-lg font-bold">--</div>
+            </div>
+            <div id="card-down-max" class="text-xs text-slate-400 mt-auto"></div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">Upload</div>
-            <div id="card-up" class="text-lg font-bold">--</div>
-            <div id="card-up-max" class="text-xs text-slate-400"></div>
+            <div class="flex-1 flex items-center">
+                <div id="card-up" class="text-lg font-bold">--</div>
+            </div>
+            <div id="card-up-max" class="text-xs text-slate-400 mt-auto"></div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">SNR</div>
-            <div id="card-snr-down" class="text-sm font-bold">--</div>
-            <div id="card-snr-up" class="text-sm font-bold">--</div>
+            <div class="flex-1 flex flex-col justify-center">
+                <div id="card-snr-down" class="text-sm font-bold">--</div>
+                <div id="card-snr-up" class="text-sm font-bold">--</div>
+            </div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">Dämpfung</div>
-            <div id="card-att-down" class="text-sm font-bold">--</div>
-            <div id="card-att-up" class="text-sm font-bold">--</div>
+            <div class="flex-1 flex flex-col justify-center">
+                <div id="card-att-down" class="text-sm font-bold">--</div>
+                <div id="card-att-up" class="text-sm font-bold">--</div>
+            </div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">Externe IP</div>
-            <div id="card-external-ip" class="text-sm font-bold break-all">--</div>
+            <div class="flex-1 flex items-center">
+                <div id="card-external-ip" class="text-sm font-bold break-all">--</div>
+            </div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">DNS</div>
-            <div id="card-dns" class="text-xs font-bold break-all">--</div>
+            <div class="flex-1 flex flex-col justify-center">
+                <div id="card-dns" class="text-xs font-bold break-all">--</div>
+            </div>
         </div>
-        <div class="card px-4 py-2 flex flex-col justify-center">
+        <div class="card px-4 py-2 flex flex-col">
             <div class="text-xs text-slate-400 uppercase tracking-wide">WLAN</div>
-            <div id="card-wlan-info" class="text-xs font-bold">--</div>
+            <div class="flex-1 flex flex-col justify-center">
+                <div id="card-wlan-info" class="text-xs font-bold">--</div>
+            </div>
         </div>
         <div class="ml-auto card px-2 py-2 flex items-stretch gap-2">
             <button onclick="navBack()" class="w-10 h-10 rounded-full bg-slate-600 hover:bg-slate-500 flex items-center justify-center font-bold self-center" style="font-size:2rem;line-height:0;padding-bottom:2px">&#8249;</button>
