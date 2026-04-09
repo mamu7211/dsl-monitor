@@ -41,8 +41,8 @@ def readings_range(
     start: date = Query(..., alias="from"),
     end: date = Query(..., alias="to"),
 ) -> list[DSLReading]:
-    if (end - start).days > 90:
-        raise HTTPException(400, "Range must not exceed 90 days")
+    if (end - start).days > 180:
+        raise HTTPException(400, "Range must not exceed 180 days")
     return get_readings_range(start, end)
 
 

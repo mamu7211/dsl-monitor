@@ -2,6 +2,7 @@ import logging
 from contextlib import asynccontextmanager
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -9,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from backend.collector import collect_dsl_reading
 from backend.config import settings
 from backend.routes import router
-from backend.storage import append_reading
+from backend.storage import append_reading, cleanup_old_data
 
 logging.basicConfig(
     level=logging.INFO,
@@ -43,6 +44,12 @@ async def lifespan(app: FastAPI):
         trigger=IntervalTrigger(minutes=settings.poll_interval_minutes),
         id="dsl_collector",
         name="DSL Data Collector",
+    )
+    scheduler.add_job(
+        cleanup_old_data,
+        trigger=CronTrigger(hour=3, minute=0),
+        id="data_cleanup",
+        name="Delete data older than 6 months",
     )
     scheduler.start()
     logger.info("Scheduler started (interval=%d min)", settings.poll_interval_minutes)

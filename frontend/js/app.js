@@ -24,6 +24,14 @@ async function loadRange(preset) {
             from = toISODate(daysAgo(29));
             to = today;
             break;
+        case '90d':
+            from = toISODate(daysAgo(89));
+            to = today;
+            break;
+        case '180d':
+            from = toISODate(daysAgo(179));
+            to = today;
+            break;
     }
 
     document.getElementById('date-from').value = from;

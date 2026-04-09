@@ -1,11 +1,15 @@
 import json
+import logging
 import os
+import shutil
 import tempfile
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from backend.config import settings
 from backend.models import DSLReading, MetricSummary
+
+logger = logging.getLogger(__name__)
 
 
 def _daily_path(d: date) -> Path:
@@ -103,3 +107,32 @@ def get_or_compute_summary(year: int, month: int) -> dict[str, MetricSummary]:
             json.dump({k: v.model_dump() for k, v in summary.items()}, f, indent=2)
 
     return summary
+
+
+def cleanup_old_data(max_age_days: int = 180) -> None:
+    """Delete daily JSON files older than max_age_days. Keeps monthly summaries."""
+    cutoff = date.today() - timedelta(days=max_age_days)
+    data_dir = Path(settings.data_dir)
+    deleted = 0
+
+    for json_file in data_dir.glob("*/*/*.json"):
+        if json_file.name == "summary.json":
+            continue
+        try:
+            file_date = date.fromisoformat(json_file.stem)
+            if file_date < cutoff:
+                json_file.unlink()
+                deleted += 1
+        except ValueError:
+            continue
+
+    # Remove empty month/year directories
+    for month_dir in sorted(data_dir.glob("*/*/")):
+        if month_dir.is_dir() and not any(month_dir.iterdir()):
+            month_dir.rmdir()
+    for year_dir in sorted(data_dir.glob("*/")):
+        if year_dir.is_dir() and not any(year_dir.iterdir()):
+            year_dir.rmdir()
+
+    if deleted:
+        logger.info("Cleaned up %d daily files older than %d days", deleted, max_age_days)

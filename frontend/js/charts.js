@@ -1,5 +1,6 @@
 const chartDefaults = {
     responsive: true,
+    elements: { point: { radius: 0, hitRadius: 6, hoverRadius: 4 } },
     interaction: { mode: 'index', intersect: false },
     scales: {
         x: {
@@ -84,10 +85,10 @@ function updateCharts(readings) {
     ratesChart.data = {
         labels: timestamps,
         datasets: [
-            { label: 'Download aktuell', data: readings.map(r => r.downstream_current), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'Download max', data: readings.map(r => r.downstream_max), borderColor: '#3b82f6', borderWidth: 1, borderDash: [5, 5], pointRadius: 0, tension: 0.3 },
-            { label: 'Upload aktuell', data: readings.map(r => r.upstream_current), borderColor: '#22c55e', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'Upload max', data: readings.map(r => r.upstream_max), borderColor: '#22c55e', borderWidth: 1, borderDash: [5, 5], pointRadius: 0, tension: 0.3 },
+            { label: 'Download aktuell', data: readings.map(r => r.downstream_current), borderColor: '#3b82f6', borderWidth: 2, tension: 0.3 },
+            { label: 'Download max', data: readings.map(r => r.downstream_max), borderColor: '#3b82f6', borderWidth: 1, borderDash: [5, 5], tension: 0.3 },
+            { label: 'Upload aktuell', data: readings.map(r => r.upstream_current), borderColor: '#22c55e', borderWidth: 2, tension: 0.3 },
+            { label: 'Upload max', data: readings.map(r => r.upstream_max), borderColor: '#22c55e', borderWidth: 1, borderDash: [5, 5], tension: 0.3 },
         ]
     };
     ratesChart.update();
@@ -95,8 +96,8 @@ function updateCharts(readings) {
     snrChart.data = {
         labels: timestamps,
         datasets: [
-            { label: 'SNR Downstream', data: readings.map(r => r.downstream_snr), borderColor: '#f59e0b', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'SNR Upstream', data: readings.map(r => r.upstream_snr), borderColor: '#ef4444', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'SNR Downstream', data: readings.map(r => r.downstream_snr), borderColor: '#f59e0b', borderWidth: 2, tension: 0.3 },
+            { label: 'SNR Upstream', data: readings.map(r => r.upstream_snr), borderColor: '#ef4444', borderWidth: 2, tension: 0.3 },
         ]
     };
     snrChart.update();
@@ -104,8 +105,8 @@ function updateCharts(readings) {
     attenuationChart.data = {
         labels: timestamps,
         datasets: [
-            { label: 'Dämpfung Downstream', data: readings.map(r => r.downstream_attenuation), borderColor: '#14b8a6', borderWidth: 2, pointRadius: 3, tension: 0.3 },
-            { label: 'Dämpfung Upstream', data: readings.map(r => r.upstream_attenuation), borderColor: '#f97316', borderWidth: 2, pointRadius: 3, tension: 0.3 },
+            { label: 'Dämpfung Downstream', data: readings.map(r => r.downstream_attenuation), borderColor: '#14b8a6', borderWidth: 2, tension: 0.3 },
+            { label: 'Dämpfung Upstream', data: readings.map(r => r.upstream_attenuation), borderColor: '#f97316', borderWidth: 2, tension: 0.3 },
         ]
     };
     attenuationChart.update();
@@ -113,10 +114,10 @@ function updateCharts(readings) {
     errorsChart.data = {
         labels: timestamps,
         datasets: [
-            { label: 'FEC Down', data: readings.map(r => r.downstream_fec), borderColor: '#8b5cf6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'CRC Down', data: readings.map(r => r.downstream_crc), borderColor: '#ec4899', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'FEC Up', data: readings.map(r => r.upstream_fec), borderColor: '#8b5cf6', borderWidth: 1, borderDash: [5, 5], pointRadius: 0, tension: 0.3 },
-            { label: 'CRC Up', data: readings.map(r => r.upstream_crc), borderColor: '#ec4899', borderWidth: 1, borderDash: [5, 5], pointRadius: 0, tension: 0.3 },
+            { label: 'FEC Down', data: readings.map(r => r.downstream_fec), borderColor: '#8b5cf6', borderWidth: 2, tension: 0.3 },
+            { label: 'CRC Down', data: readings.map(r => r.downstream_crc), borderColor: '#ec4899', borderWidth: 2, tension: 0.3 },
+            { label: 'FEC Up', data: readings.map(r => r.upstream_fec), borderColor: '#8b5cf6', borderWidth: 1, borderDash: [5, 5], tension: 0.3 },
+            { label: 'CRC Up', data: readings.map(r => r.upstream_crc), borderColor: '#ec4899', borderWidth: 1, borderDash: [5, 5], tension: 0.3 },
         ]
     };
     errorsChart.update();
@@ -125,10 +126,10 @@ function updateCharts(readings) {
     clientsChart.data = {
         labels: timestamps,
         datasets: [
-            { label: 'LAN/WLAN Gesamt', data: readings.map(r => r.hosts_total), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'WLAN 2.4 GHz', data: readings.map(r => r.wlan_clients_24ghz), borderColor: '#22c55e', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'WLAN 5 GHz', data: readings.map(r => r.wlan_clients_5ghz), borderColor: '#f59e0b', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'WLAN Gast', data: readings.map(r => r.wlan_clients_guest), borderColor: '#ef4444', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'LAN/WLAN Gesamt', data: readings.map(r => r.hosts_total), borderColor: '#3b82f6', borderWidth: 2, tension: 0.3 },
+            { label: 'WLAN 2.4 GHz', data: readings.map(r => r.wlan_clients_24ghz), borderColor: '#22c55e', borderWidth: 2, tension: 0.3 },
+            { label: 'WLAN 5 GHz', data: readings.map(r => r.wlan_clients_5ghz), borderColor: '#f59e0b', borderWidth: 2, tension: 0.3 },
+            { label: 'WLAN Gast', data: readings.map(r => r.wlan_clients_guest), borderColor: '#ef4444', borderWidth: 2, tension: 0.3 },
         ]
     };
     clientsChart.update();
@@ -136,8 +137,8 @@ function updateCharts(readings) {
     trafficRateChart.data = {
         labels: timestamps,
         datasets: [
-            { label: 'Senden', data: readings.map(r => (r.bytes_send_rate / 1024).toFixed(1)), borderColor: '#22c55e', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'Empfangen', data: readings.map(r => (r.bytes_receive_rate / 1024).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'Senden', data: readings.map(r => (r.bytes_send_rate / 1024).toFixed(1)), borderColor: '#22c55e', borderWidth: 2, tension: 0.3 },
+            { label: 'Empfangen', data: readings.map(r => (r.bytes_receive_rate / 1024).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2, tension: 0.3 },
         ]
     };
     trafficRateChart.update();
@@ -145,8 +146,8 @@ function updateCharts(readings) {
     trafficTotalChart.data = {
         labels: timestamps,
         datasets: [
-            { label: 'Gesendet', data: readings.map(r => (r.total_bytes_sent / 1048576).toFixed(1)), borderColor: '#22c55e', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-            { label: 'Empfangen', data: readings.map(r => (r.total_bytes_received / 1048576).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'Gesendet', data: readings.map(r => (r.total_bytes_sent / 1048576).toFixed(1)), borderColor: '#22c55e', borderWidth: 2, tension: 0.3 },
+            { label: 'Empfangen', data: readings.map(r => (r.total_bytes_received / 1048576).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2, tension: 0.3 },
         ]
     };
     trafficTotalChart.update();
@@ -154,8 +155,8 @@ function updateCharts(readings) {
     channelChart.data = {
         labels: timestamps,
         datasets: [
-            { label: '2.4 GHz Kanal', data: readings.map(r => r.wlan_channel_24ghz), borderColor: '#22c55e', borderWidth: 2, pointRadius: 3, stepped: true },
-            { label: '5 GHz Kanal', data: readings.map(r => r.wlan_channel_5ghz), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 3, stepped: true },
+            { label: '2.4 GHz Kanal', data: readings.map(r => r.wlan_channel_24ghz), borderColor: '#22c55e', borderWidth: 2, stepped: true },
+            { label: '5 GHz Kanal', data: readings.map(r => r.wlan_channel_5ghz), borderColor: '#3b82f6', borderWidth: 2, stepped: true },
         ]
     };
     channelChart.update();
