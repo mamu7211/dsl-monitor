@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FritzBox DSL Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; }
+        .card { background: #1e293b; border-radius: 0.75rem; }
+        .chart-container { position: relative; min-height: 250px; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <header class="mb-8">
+        <h1 class="text-2xl font-bold text-white">FritzBox DSL Monitor</h1>
+        <p id="last-update" class="text-sm text-slate-400 mt-1"></p>
+    </header>
+
+    <!-- Status Cards -->
+    <div id="status-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">Status</div>
+            <div id="card-status" class="text-xl font-bold mt-1">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">Uptime</div>
+            <div id="card-uptime" class="text-xl font-bold mt-1">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">Download</div>
+            <div id="card-down" class="text-xl font-bold mt-1">--</div>
+            <div id="card-down-max" class="text-xs text-slate-400"></div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">Upload</div>
+            <div id="card-up" class="text-xl font-bold mt-1">--</div>
+            <div id="card-up-max" class="text-xs text-slate-400"></div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">SNR Downstream</div>
+            <div id="card-snr-down" class="text-xl font-bold mt-1">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">SNR Upstream</div>
+            <div id="card-snr-up" class="text-xl font-bold mt-1">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">Dämpfung Down</div>
+            <div id="card-att-down" class="text-xl font-bold mt-1">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">Dämpfung Up</div>
+            <div id="card-att-up" class="text-xl font-bold mt-1">--</div>
+        </div>
+    </div>
+
+    <!-- Date Range Controls -->
+    <div class="flex flex-wrap gap-2 mb-6">
+        <button onclick="loadRange('today')" class="px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-sm">Heute</button>
+        <button onclick="loadRange('7d')" class="px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-sm">7 Tage</button>
+        <button onclick="loadRange('30d')" class="px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-sm">30 Tage</button>
+        <input type="date" id="date-from" class="px-2 py-1 rounded bg-slate-700 text-sm">
+        <input type="date" id="date-to" class="px-2 py-1 rounded bg-slate-700 text-sm">
+        <button onclick="loadCustomRange()" class="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-sm">Laden</button>
+        <button onclick="collectNow()" class="ml-auto px-3 py-1.5 rounded bg-green-700 hover:bg-green-600 text-sm">Jetzt messen</button>
+    </div>
+
+    <!-- Charts 2x2 Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">Datenraten (kbit/s)</h2>
+            <div class="chart-container"><canvas id="chart-rates"></canvas></div>
+        </div>
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">Störabstandsmarge (dB)</h2>
+            <div class="chart-container"><canvas id="chart-snr"></canvas></div>
+        </div>
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">Leitungsdämpfung (dB)</h2>
+            <div class="chart-container"><canvas id="chart-attenuation"></canvas></div>
+        </div>
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">FEC / CRC Fehler (kumulativ)</h2>
+            <div class="chart-container"><canvas id="chart-errors"></canvas></div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
