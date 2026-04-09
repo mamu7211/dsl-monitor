@@ -1,67 +1,96 @@
+// State
+let rangeSize = parseInt(localStorage.getItem('rangeSize') || '1');
+let endDate = new Date();
+endDate.setHours(0, 0, 0, 0);
+
 function toISODate(d) {
     return d.toISOString().split('T')[0];
 }
 
-function daysAgo(n) {
+function addDays(d, n) {
+    const r = new Date(d);
+    r.setDate(r.getDate() + n);
+    return r;
+}
+
+function today() {
     const d = new Date();
-    d.setDate(d.getDate() - n);
+    d.setHours(0, 0, 0, 0);
     return d;
 }
 
-async function loadRange(preset) {
-    let from, to;
-    const today = toISODate(new Date());
-
-    switch (preset) {
-        case 'today':
-            from = to = today;
-            break;
-        case '7d':
-            from = toISODate(daysAgo(6));
-            to = today;
-            break;
-        case '30d':
-            from = toISODate(daysAgo(29));
-            to = today;
-            break;
-        case '90d':
-            from = toISODate(daysAgo(89));
-            to = today;
-            break;
-        case '180d':
-            from = toISODate(daysAgo(179));
-            to = today;
-            break;
-    }
-
-    document.getElementById('date-from').value = from;
-    document.getElementById('date-to').value = to;
-    await fetchAndRender(from, to);
+function formatDate(d) {
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' });
 }
 
-async function loadCustomRange() {
-    const from = document.getElementById('date-from').value;
-    const to = document.getElementById('date-to').value;
-    if (from && to) {
-        await fetchAndRender(from, to);
-    }
+function getStartDate() {
+    return rangeSize <= 1 ? endDate : addDays(endDate, -(rangeSize - 1));
 }
 
-async function fetchAndRender(from, to) {
-    const diffMs = new Date(to) - new Date(from);
-    currentRangeDays = Math.round(diffMs / 86400000);
+function updateRangeLabel() {
+    const start = getStartDate();
+    const label = document.getElementById('range-label');
+    if (rangeSize <= 1) {
+        label.textContent = formatDate(endDate);
+    } else {
+        label.textContent = `${formatDate(start)} – ${formatDate(endDate)}`;
+    }
+
+    // Disable forward if at today
+    const isToday = toISODate(endDate) === toISODate(today());
+    document.getElementById('btn-forward').disabled = isToday;
+    document.getElementById('btn-forward').classList.toggle('opacity-30', isToday);
+
+    // Highlight active range button
+    document.querySelectorAll('.range-btn').forEach(btn => {
+        const active = parseInt(btn.dataset.range) === rangeSize;
+        btn.className = `range-btn px-2 py-1 rounded text-xs ${active ? 'bg-blue-600 text-white' : 'bg-slate-700 hover:bg-slate-600'}`;
+    });
+}
+
+async function loadData() {
+    const start = getStartDate();
+    const from = toISODate(start);
+    const to = toISODate(endDate);
+
+    currentRangeDays = rangeSize;
 
     const readings = from === to
         ? await API.getReadings(from)
         : await API.getReadingsRange(from, to);
     updateCharts(readings);
+    updateRangeLabel();
+}
+
+function setRange(days) {
+    rangeSize = days;
+    localStorage.setItem('rangeSize', days);
+    endDate = today();
+    loadData();
+}
+
+function navBack() {
+    endDate = addDays(endDate, -rangeSize);
+    loadData();
+}
+
+function navForward() {
+    const next = addDays(endDate, rangeSize);
+    const t = today();
+    endDate = next > t ? t : next;
+    loadData();
+}
+
+function navToday() {
+    endDate = today();
+    loadData();
 }
 
 async function collectNow() {
     const reading = await API.collectNow();
     if (reading) {
         updateDashboard(reading);
-        await loadRange('today');
+        navToday();
     }
 }
 
@@ -74,6 +103,6 @@ async function refreshStatus() {
 document.addEventListener('DOMContentLoaded', async () => {
     initCharts();
     await refreshStatus();
-    await loadRange('today');
+    await loadData();
     setInterval(refreshStatus, 5 * 60 * 1000);
 });
