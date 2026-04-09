@@ -41,6 +41,23 @@ function makeChartOptions(overrides) {
             legend: { labels: { color: '#e2e8f0', usePointStyle: true, pointStyle: 'line' } },
             tooltip: { usePointStyle: true, pointStyle: 'line' },
             decimation: { enabled: true, algorithm: 'min-max' },
+            zoom: {
+                zoom: {
+                    drag: {
+                        enabled: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                        borderColor: 'rgba(59, 130, 246, 0.5)',
+                        borderWidth: 1,
+                    },
+                    mode: 'x',
+                    onZoomComplete: syncZoom,
+                },
+                pan: {
+                    enabled: true,
+                    mode: 'x',
+                    modifierKey: 'shift',
+                },
+            },
         }
     };
     if (overrides) {
@@ -50,6 +67,31 @@ function makeChartOptions(overrides) {
 }
 
 let ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, trafficRateChart, trafficTotalChart, channelChart;
+
+function getAllCharts() {
+    return [ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, trafficRateChart, trafficTotalChart, channelChart];
+}
+
+let _syncing = false;
+function syncZoom({chart}) {
+    if (_syncing) return;
+    _syncing = true;
+    const {min, max} = chart.scales.x;
+    getAllCharts().forEach(c => {
+        if (c !== chart) {
+            c.options.scales.x.min = min;
+            c.options.scales.x.max = max;
+            c.update('none');
+        }
+    });
+    _syncing = false;
+}
+
+function resetZoom() {
+    getAllCharts().forEach(c => {
+        c.resetZoom();
+    });
+}
 
 function initCharts() {
     const opts = makeChartOptions();
@@ -78,8 +120,7 @@ function updateTimeScale(chart) {
 }
 
 function updateCharts(readings) {
-    const allCharts = [ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, trafficRateChart, trafficTotalChart, channelChart];
-    allCharts.forEach(c => updateTimeScale(c));
+    getAllCharts().forEach(c => updateTimeScale(c));
 
     ratesChart.data = {
         datasets: [
