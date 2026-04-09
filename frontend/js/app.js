@@ -23,8 +23,29 @@ function todayMidnight() {
     return d;
 }
 
+// Snap to next interval boundary (e.g. 22:34 with 2h range -> 00:00 next day)
+function snapToGrid(d) {
+    if (rangeSize >= 1) {
+        const snapped = new Date(d);
+        snapped.setHours(0, 0, 0, 0);
+        if (snapped < d) snapped.setDate(snapped.getDate() + 1);
+        return snapped;
+    }
+    const hours = rangeHours();
+    const snapped = new Date(d);
+    snapped.setMinutes(0, 0, 0);
+    const h = snapped.getHours();
+    const nextSlot = Math.ceil((h + (d > snapped ? 1 : 0)) / hours) * hours;
+    snapped.setHours(nextSlot);
+    return snapped;
+}
+
+function formatTime(d) {
+    return d.toLocaleString('de-DE', { hour: '2-digit', minute: '2-digit' });
+}
+
 function formatDateTime(d) {
-    return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
 
 function formatDate(d) {
@@ -43,14 +64,14 @@ function updateRangeLabel() {
     const start = getStartDate();
     const label = document.getElementById('range-label');
     if (rangeSize < 1) {
-        label.textContent = `${formatDateTime(start)} – ${formatDateTime(endDate)}`;
+        label.textContent = `${formatTime(start)} – ${formatTime(endDate)}`;
     } else if (rangeSize <= 1) {
         label.textContent = formatDate(endDate);
     } else {
         label.textContent = `${formatDate(start)} – ${formatDate(endDate)}`;
     }
 
-    // Disable forward if at now
+    // Disable forward if endDate >= now
     const isNow = endDate.getTime() >= now().getTime() - 60000;
     document.getElementById('btn-forward').disabled = isNow;
     document.getElementById('btn-forward').classList.toggle('opacity-30', isNow);
@@ -93,7 +114,7 @@ async function loadData() {
 function setRange(days) {
     rangeSize = days;
     localStorage.setItem('rangeSize', days);
-    endDate = rangeSize < 1 ? now() : todayMidnight();
+    endDate = snapToGrid(now());
     loadData();
 }
 
@@ -104,13 +125,13 @@ function navBack() {
 
 function navForward() {
     const next = addHours(endDate, rangeHours());
-    const n = rangeSize < 1 ? now() : todayMidnight();
-    endDate = next > n ? n : next;
+    const snapped = snapToGrid(now());
+    endDate = next > snapped ? snapped : next;
     loadData();
 }
 
 function navToday() {
-    endDate = rangeSize < 1 ? now() : todayMidnight();
+    endDate = snapToGrid(now());
     loadData();
 }
 
@@ -130,8 +151,7 @@ async function refreshStatus() {
 // Init
 document.addEventListener('DOMContentLoaded', async () => {
     initCharts();
-    // Set initial endDate based on stored range
-    endDate = rangeSize < 1 ? now() : todayMidnight();
+    endDate = snapToGrid(now());
     await refreshStatus();
     await loadData();
     setInterval(refreshStatus, 5 * 60 * 1000);
