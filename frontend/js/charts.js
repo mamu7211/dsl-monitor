@@ -26,6 +26,7 @@ function getTimeScaleConfig(rangeDays) {
 function makeChartOptions(overrides) {
     const defaults = {
         responsive: true,
+        maintainAspectRatio: false,
         parsing: false,
         elements: { point: { radius: 0, hitRadius: 6, hoverRadius: 4 } },
         interaction: { mode: 'nearest', axis: 'x', intersect: false },

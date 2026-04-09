@@ -12,10 +12,10 @@
     <style>
         body { background: #0f172a; color: #e2e8f0; }
         .card { background: #1e293b; border-radius: 0.75rem; }
-        .chart-container { position: relative; min-height: 180px; }
+        .chart-wrap { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<body class="h-screen flex flex-col p-4 md:p-8 overflow-hidden">
     <header class="flex flex-wrap items-stretch gap-3 mb-6">
         <div class="flex flex-col justify-center">
             <h1 class="text-2xl font-bold text-white">FritzBox DSL Monitor</h1>
@@ -62,64 +62,60 @@
             <div class="text-xs text-slate-400 uppercase tracking-wide">WLAN</div>
             <div id="card-wlan-info" class="text-xs font-bold">--</div>
         </div>
-        <div class="ml-auto card px-4 py-2 flex flex-col justify-center items-center gap-1.5">
-            <div class="flex items-center gap-1.5">
-                <button onclick="navBack()" class="px-1.5 py-0.5 rounded bg-slate-600 hover:bg-slate-500 text-xs">&#8249;</button>
-                <span id="range-label" class="text-lg font-bold text-white w-44 text-center">--</span>
-                <button onclick="navForward()" id="btn-forward" class="px-1.5 py-0.5 rounded bg-slate-600 hover:bg-slate-500 text-xs">&#8250;</button>
+        <div class="ml-auto card px-2 py-2 flex items-stretch gap-2">
+            <button onclick="navBack()" class="w-10 rounded bg-slate-600 hover:bg-slate-500 flex items-center justify-center font-bold" style="font-size:3em;line-height:1">&#8249;</button>
+            <div class="flex flex-col justify-center items-center gap-1.5">
+                <span id="range-label" class="text-lg font-bold text-white">--</span>
+                <div class="flex items-center gap-1">
+                    <button onclick="setRange(1)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="1">1T</button>
+                    <button onclick="setRange(7)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="7">7T</button>
+                    <button onclick="setRange(14)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="14">14T</button>
+                    <button onclick="setRange(30)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="30">30T</button>
+                    <button onclick="setRange(60)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="60">60T</button>
+                </div>
             </div>
-            <div class="flex items-center gap-1">
-                <button onclick="setRange(1)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="1">1T</button>
-                <button onclick="setRange(7)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="7">7T</button>
-                <button onclick="setRange(14)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="14">14T</button>
-                <button onclick="setRange(30)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="30">30T</button>
-                <button onclick="setRange(60)" class="range-btn px-1.5 py-0.5 rounded text-xs" data-range="60">60T</button>
-                <button onclick="navToday()" class="px-1.5 py-0.5 rounded bg-blue-600 hover:bg-blue-500 text-xs">Heute</button>
-                <button onclick="resetZoom()" class="px-1.5 py-0.5 rounded bg-slate-600 hover:bg-slate-500 text-xs">Reset</button>
-            </div>
+            <button onclick="navForward()" id="btn-forward" class="w-10 rounded bg-slate-600 hover:bg-slate-500 flex items-center justify-center font-bold" style="font-size:3em;line-height:1">&#8250;</button>
         </div>
-        <button onclick="collectNow()" class="card px-4 py-2 bg-green-700 hover:bg-green-600 text-xs font-bold uppercase tracking-wide flex items-center">Messen</button>
+        <div class="flex flex-col gap-2">
+            <button onclick="collectNow()" class="card px-4 py-2 bg-green-700 hover:bg-green-600 text-xs font-bold uppercase tracking-wide flex items-center justify-center">Messen</button>
+            <button onclick="navToday()" class="card px-4 py-2 bg-blue-600 hover:bg-blue-500 text-xs font-bold uppercase tracking-wide flex items-center justify-center">Heute</button>
+            <button onclick="resetZoom()" class="card px-4 py-2 bg-slate-600 hover:bg-slate-500 text-xs font-bold uppercase tracking-wide flex items-center justify-center">Zoom Reset</button>
+        </div>
     </header>
 
-    <!-- Charts: DSL -->
-    <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">DSL Verlauf</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">Datenraten (kbit/s)</h2>
-            <div class="chart-container"><canvas id="chart-rates"></canvas></div>
+    <!-- Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 flex-1">
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">Datenraten (kbit/s)</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-rates"></canvas></div></div>
         </div>
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">Störabstandsmarge (dB)</h2>
-            <div class="chart-container"><canvas id="chart-snr"></canvas></div>
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">Störabstandsmarge (dB)</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-snr"></canvas></div></div>
         </div>
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">Leitungsdämpfung (dB)</h2>
-            <div class="chart-container"><canvas id="chart-attenuation"></canvas></div>
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">Leitungsdämpfung (dB)</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-attenuation"></canvas></div></div>
         </div>
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">FEC / CRC Fehler (kumulativ)</h2>
-            <div class="chart-container"><canvas id="chart-errors"></canvas></div>
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">FEC / CRC Fehler</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-errors"></canvas></div></div>
         </div>
-    </div>
-
-    <!-- Charts: Netzwerk -->
-    <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">Netzwerk Verlauf</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">Verbundene Clients</h2>
-            <div class="chart-container"><canvas id="chart-clients"></canvas></div>
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">Verbundene Clients</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-clients"></canvas></div></div>
         </div>
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">Traffic Rate (KB/s)</h2>
-            <div class="chart-container"><canvas id="chart-traffic-rate"></canvas></div>
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">Traffic Rate (KB/s)</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-traffic-rate"></canvas></div></div>
         </div>
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">Traffic Gesamt (MB)</h2>
-            <div class="chart-container"><canvas id="chart-traffic-total"></canvas></div>
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">Traffic Gesamt (MB)</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-traffic-total"></canvas></div></div>
         </div>
-        <div class="card p-4">
-            <h2 class="text-sm font-semibold text-slate-300 mb-3">WLAN Kanal</h2>
-            <div class="chart-container"><canvas id="chart-channel"></canvas></div>
+        <div class="card p-3 flex flex-col">
+            <h2 class="text-xs font-semibold text-slate-400 mb-1">WLAN Kanal</h2>
+            <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-channel"></canvas></div></div>
         </div>
     </div>
 
