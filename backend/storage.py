@@ -70,6 +70,8 @@ def compute_monthly_summary(year: int, month: int) -> dict[str, MetricSummary]:
         "downstream_snr", "upstream_snr", "downstream_attenuation", "upstream_attenuation",
         "downstream_power", "upstream_power", "downstream_fec", "upstream_fec",
         "downstream_crc", "upstream_crc",
+        "hosts_total", "wlan_clients_24ghz", "wlan_clients_5ghz", "wlan_clients_guest",
+        "bytes_send_rate", "bytes_receive_rate", "total_bytes_sent", "total_bytes_received",
     ]
 
     summary = {}

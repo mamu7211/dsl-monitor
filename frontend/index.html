@@ -19,8 +19,9 @@
         <p id="last-update" class="text-sm text-slate-400 mt-1"></p>
     </header>
 
-    <!-- Status Cards -->
-    <div id="status-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <!-- Status Cards: DSL -->
+    <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">DSL</h2>
+    <div id="status-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div class="card p-4">
             <div class="text-xs text-slate-400 uppercase tracking-wide">Status</div>
             <div id="card-status" class="text-xl font-bold mt-1">--</div>
@@ -57,6 +58,27 @@
         </div>
     </div>
 
+    <!-- Status Cards: Netzwerk -->
+    <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">Netzwerk</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">WAN Status</div>
+            <div id="card-wan-status" class="text-xl font-bold mt-1">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">Externe IP</div>
+            <div id="card-external-ip" class="text-lg font-bold mt-1 break-all">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">DNS Server</div>
+            <div id="card-dns" class="text-sm font-bold mt-1 break-all">--</div>
+        </div>
+        <div class="card p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wide">WLAN</div>
+            <div id="card-wlan-info" class="text-sm font-bold mt-1">--</div>
+        </div>
+    </div>
+
     <!-- Date Range Controls -->
     <div class="flex flex-wrap gap-2 mb-6">
         <button onclick="loadRange('today')" class="px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-sm">Heute</button>
@@ -68,8 +90,9 @@
         <button onclick="collectNow()" class="ml-auto px-3 py-1.5 rounded bg-green-700 hover:bg-green-600 text-sm">Jetzt messen</button>
     </div>
 
-    <!-- Charts 2x2 Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Charts: DSL -->
+    <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">DSL Verlauf</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div class="card p-4">
             <h2 class="text-sm font-semibold text-slate-300 mb-3">Datenraten (kbit/s)</h2>
             <div class="chart-container"><canvas id="chart-rates"></canvas></div>
@@ -85,6 +108,27 @@
         <div class="card p-4">
             <h2 class="text-sm font-semibold text-slate-300 mb-3">FEC / CRC Fehler (kumulativ)</h2>
             <div class="chart-container"><canvas id="chart-errors"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Charts: Netzwerk -->
+    <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">Netzwerk Verlauf</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">Verbundene Clients</h2>
+            <div class="chart-container"><canvas id="chart-clients"></canvas></div>
+        </div>
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">Traffic Rate (KB/s)</h2>
+            <div class="chart-container"><canvas id="chart-traffic-rate"></canvas></div>
+        </div>
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">Traffic Gesamt (MB)</h2>
+            <div class="chart-container"><canvas id="chart-traffic-total"></canvas></div>
+        </div>
+        <div class="card p-4">
+            <h2 class="text-sm font-semibold text-slate-300 mb-3">WLAN Kanal</h2>
+            <div class="chart-container"><canvas id="chart-channel"></canvas></div>
         </div>
     </div>
 

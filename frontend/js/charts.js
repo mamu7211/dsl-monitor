@@ -20,7 +20,7 @@ const chartDefaults = {
     }
 };
 
-let ratesChart, snrChart, attenuationChart, errorsChart;
+let ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, trafficRateChart, trafficTotalChart, channelChart;
 
 function initCharts() {
     ratesChart = new Chart(document.getElementById('chart-rates'), {
@@ -45,6 +45,36 @@ function initCharts() {
         type: 'line',
         data: { datasets: [] },
         options: { ...chartDefaults }
+    });
+
+    clientsChart = new Chart(document.getElementById('chart-clients'), {
+        type: 'line',
+        data: { datasets: [] },
+        options: { ...chartDefaults }
+    });
+
+    trafficRateChart = new Chart(document.getElementById('chart-traffic-rate'), {
+        type: 'line',
+        data: { datasets: [] },
+        options: { ...chartDefaults }
+    });
+
+    trafficTotalChart = new Chart(document.getElementById('chart-traffic-total'), {
+        type: 'line',
+        data: { datasets: [] },
+        options: { ...chartDefaults }
+    });
+
+    channelChart = new Chart(document.getElementById('chart-channel'), {
+        type: 'line',
+        data: { datasets: [] },
+        options: {
+            ...chartDefaults,
+            scales: {
+                ...chartDefaults.scales,
+                y: { ...chartDefaults.scales.y, beginAtZero: false },
+            }
+        }
     });
 }
 
@@ -90,4 +120,43 @@ function updateCharts(readings) {
         ]
     };
     errorsChart.update();
+
+    // Network charts
+    clientsChart.data = {
+        labels: timestamps,
+        datasets: [
+            { label: 'LAN/WLAN Gesamt', data: readings.map(r => r.hosts_total), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'WLAN 2.4 GHz', data: readings.map(r => r.wlan_clients_24ghz), borderColor: '#22c55e', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'WLAN 5 GHz', data: readings.map(r => r.wlan_clients_5ghz), borderColor: '#f59e0b', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'WLAN Gast', data: readings.map(r => r.wlan_clients_guest), borderColor: '#ef4444', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+        ]
+    };
+    clientsChart.update();
+
+    trafficRateChart.data = {
+        labels: timestamps,
+        datasets: [
+            { label: 'Senden', data: readings.map(r => (r.bytes_send_rate / 1024).toFixed(1)), borderColor: '#22c55e', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'Empfangen', data: readings.map(r => (r.bytes_receive_rate / 1024).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+        ]
+    };
+    trafficRateChart.update();
+
+    trafficTotalChart.data = {
+        labels: timestamps,
+        datasets: [
+            { label: 'Gesendet', data: readings.map(r => (r.total_bytes_sent / 1048576).toFixed(1)), borderColor: '#22c55e', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+            { label: 'Empfangen', data: readings.map(r => (r.total_bytes_received / 1048576).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+        ]
+    };
+    trafficTotalChart.update();
+
+    channelChart.data = {
+        labels: timestamps,
+        datasets: [
+            { label: '2.4 GHz Kanal', data: readings.map(r => r.wlan_channel_24ghz), borderColor: '#22c55e', borderWidth: 2, pointRadius: 3, stepped: true },
+            { label: '5 GHz Kanal', data: readings.map(r => r.wlan_channel_5ghz), borderColor: '#3b82f6', borderWidth: 2, pointRadius: 3, stepped: true },
+        ]
+    };
+    channelChart.update();
 }

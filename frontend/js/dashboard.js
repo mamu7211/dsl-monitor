@@ -39,6 +39,25 @@ function updateDashboard(reading) {
     document.getElementById('card-att-down').textContent = `${reading.downstream_attenuation.toFixed(1)} dB`;
     document.getElementById('card-att-up').textContent = `${reading.upstream_attenuation.toFixed(1)} dB`;
 
+    // WAN
+    const wanEl = document.getElementById('card-wan-status');
+    wanEl.textContent = reading.wan_status === 'Connected' ? 'Verbunden' : reading.wan_status || '--';
+    wanEl.className = `text-xl font-bold mt-1 ${reading.wan_status === 'Connected' ? 'text-green-400' : 'text-red-400'}`;
+
+    document.getElementById('card-external-ip').textContent = reading.external_ip || '--';
+
+    const dns1 = reading.dns_server_1 || '';
+    const dns2 = reading.dns_server_2 || '';
+    document.getElementById('card-dns').textContent = dns2 ? `${dns1}\n${dns2}` : dns1 || '--';
+    document.getElementById('card-dns').style.whiteSpace = 'pre-line';
+
+    // WLAN
+    const wlanParts = [];
+    if (reading.wlan_ssid_24ghz) wlanParts.push(`2.4G: ${reading.wlan_ssid_24ghz} (Ch ${reading.wlan_channel_24ghz})`);
+    if (reading.wlan_ssid_5ghz) wlanParts.push(`5G: ${reading.wlan_ssid_5ghz} (Ch ${reading.wlan_channel_5ghz})`);
+    document.getElementById('card-wlan-info').textContent = wlanParts.join('\n') || '--';
+    document.getElementById('card-wlan-info').style.whiteSpace = 'pre-line';
+
     const ts = new Date(reading.timestamp);
     document.getElementById('last-update').textContent = `Letztes Update: ${ts.toLocaleString('de-DE')}`;
 }
