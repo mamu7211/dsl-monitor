@@ -48,7 +48,7 @@ def collect_dsl_reading() -> DSLReading:
     return DSLReading(
         timestamp=datetime.now(timezone.utc),
         status=info.get("NewStatus", "Unknown"),
-        uptime=info.get("NewUptime", 0),
+        uptime=wan_status.get("NewUptime", 0),
         downstream_current=info.get("NewDownstreamCurrRate", 0),
         downstream_max=info.get("NewDownstreamMaxRate", 0),
         upstream_current=info.get("NewUpstreamCurrRate", 0),
