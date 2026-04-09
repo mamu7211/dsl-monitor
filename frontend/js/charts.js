@@ -7,11 +7,17 @@ function getTimeScaleConfig(rangeDays) {
         grid: { color: '#334155' },
     };
 
-    if (rangeDays <= 1) {
-        return { ...base, time: { unit: 'hour', stepSize: 3, displayFormats: { hour: 'HH:mm' }, tooltipFormat: 'dd.MM.yyyy HH:mm' },
-            min: new Date(new Date().setHours(0,0,0,0)).toISOString(),
-            max: new Date(new Date().setHours(23,59,59,999)).toISOString(),
-        };
+    if (rangeDays <= 0.125) {
+        // 2h
+        return { ...base, time: { unit: 'minute', stepSize: 15, displayFormats: { minute: 'HH:mm' }, tooltipFormat: 'dd.MM.yyyy HH:mm' } };
+    } else if (rangeDays <= 0.3) {
+        // 6h
+        return { ...base, time: { unit: 'minute', stepSize: 30, displayFormats: { minute: 'HH:mm' }, tooltipFormat: 'dd.MM.yyyy HH:mm' } };
+    } else if (rangeDays < 1) {
+        // 12h
+        return { ...base, time: { unit: 'hour', stepSize: 1, displayFormats: { hour: 'HH:mm' }, tooltipFormat: 'dd.MM.yyyy HH:mm' } };
+    } else if (rangeDays <= 1) {
+        return { ...base, time: { unit: 'hour', stepSize: 3, displayFormats: { hour: 'HH:mm' }, tooltipFormat: 'dd.MM.yyyy HH:mm' } };
     } else if (rangeDays <= 7) {
         return { ...base, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.' }, tooltipFormat: 'EEE dd.MM.yyyy HH:mm' } };
     } else if (rangeDays <= 30) {
