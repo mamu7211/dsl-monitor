@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2026-04-10
+
+### Changed
+- Rename "DLM Fortschritt" to "Profilqualität" with glossary entry
+- Header title top-aligned, GitHub icon with repo link
+- Various UI polish
+
 ## [1.2.0] - 2026-04-10
 
 ### Added
