@@ -3,7 +3,6 @@ from contextlib import asynccontextmanager
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
@@ -39,9 +38,12 @@ def scheduled_collect():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    parts = settings.poll_cron.split()
     scheduler.add_job(
         scheduled_collect,
-        trigger=IntervalTrigger(minutes=settings.poll_interval_minutes),
+        trigger=CronTrigger(
+            minute=parts[0], hour=parts[1], day=parts[2], month=parts[3], day_of_week=parts[4],
+        ),
         id="dsl_collector",
         name="DSL Data Collector",
     )
@@ -52,7 +54,7 @@ async def lifespan(app: FastAPI):
         name="Delete data older than 6 months",
     )
     scheduler.start()
-    logger.info("Scheduler started (interval=%d min)", settings.poll_interval_minutes)
+    logger.info("Scheduler started (cron=%s)", settings.poll_cron)
 
     # Initial collection on startup
     import asyncio

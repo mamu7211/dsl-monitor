@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     fritz_ip: str = "192.168.178.1"
     fritz_user: str = ""
     fritz_password: str = ""
-    poll_interval_minutes: int = 60
+    poll_cron: str = "*/15 * * * *"
     data_dir: str = "./data"
     target_downstream: int = 50000  # kbit/s
     target_upstream: int = 25000    # kbit/s

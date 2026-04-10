@@ -115,7 +115,7 @@ services:
 FRITZ_IP=192.168.178.1      # FritzBox IP-Adresse
 FRITZ_USER=                  # Benutzername (leer = Standard-Admin)
 FRITZ_PASSWORD=geheim        # FritzBox-Passwort
-POLL_INTERVAL_MINUTES=60     # Messintervall in Minuten
+POLL_CRON=*/15 * * * *       # Cron-Ausdruck für Messintervall (default: alle 15 Min)
 TARGET_DOWNSTREAM=50000      # Gebuchte Download-Rate in kbit/s (für DLM-Fortschritt)
 TARGET_UPSTREAM=25000        # Gebuchte Upload-Rate in kbit/s
 ```
