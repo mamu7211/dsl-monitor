@@ -5,7 +5,8 @@ from datetime import date
 from fastapi import APIRouter, HTTPException, Query
 
 from backend.collector import collect_dsl_reading
-from backend.models import DSLReading, MetricSummary
+from backend.diagnostics import compute_diagnostics
+from backend.models import DiagnosticsResponse, DSLReading, MetricSummary
 from backend.storage import append_reading, get_or_compute_summary, get_readings, get_readings_range
 
 logger = logging.getLogger(__name__)
@@ -44,6 +45,15 @@ def readings_range(
     if (end - start).days > 180:
         raise HTTPException(400, "Range must not exceed 180 days")
     return get_readings_range(start, end)
+
+
+@router.get("/diagnostics")
+def diagnostics(
+    start: date = Query(..., alias="from"),
+    end: date = Query(..., alias="to"),
+) -> DiagnosticsResponse:
+    readings = get_readings_range(start, end)
+    return compute_diagnostics(readings)
 
 
 @router.get("/summary/{year}/{month}")

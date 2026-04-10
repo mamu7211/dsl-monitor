@@ -22,5 +22,10 @@ const API = {
     async getSummary(year, month) {
         const res = await fetch(`/api/summary/${year}/${month}`);
         return res.ok ? res.json() : {};
+    },
+
+    async getDiagnostics(from, to) {
+        const res = await fetch(`/api/diagnostics?from=${from}&to=${to}`);
+        return res.ok ? res.json() : null;
     }
 };

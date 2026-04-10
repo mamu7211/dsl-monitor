@@ -103,7 +103,31 @@ function resetZoom() {
 function initCharts() {
     const opts = makeChartOptions();
 
-    ratesChart = new Chart(document.getElementById('chart-rates'), { type: 'line', data: { datasets: [] }, options: opts });
+    const ratesOpts = makeChartOptions({
+        plugins: {
+            annotation: {
+                annotations: {
+                    targetLine: {
+                        type: 'line',
+                        yMin: 50000,
+                        yMax: 50000,
+                        borderColor: 'rgba(239, 68, 68, 0.6)',
+                        borderWidth: 2,
+                        borderDash: [6, 4],
+                        label: {
+                            display: true,
+                            content: 'Ziel 50 Mbit/s',
+                            position: 'start',
+                            color: 'rgba(239, 68, 68, 0.8)',
+                            font: { size: 10 },
+                            backgroundColor: 'transparent',
+                        }
+                    }
+                }
+            }
+        }
+    });
+    ratesChart = new Chart(document.getElementById('chart-rates'), { type: 'line', data: { datasets: [] }, options: ratesOpts });
     snrChart = new Chart(document.getElementById('chart-snr'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
     attenuationChart = new Chart(document.getElementById('chart-attenuation'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
     errorsChart = new Chart(document.getElementById('chart-errors'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });

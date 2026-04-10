@@ -49,3 +49,34 @@ class MetricSummary(BaseModel):
     max: float
     avg: float
     count: int
+
+
+class AlertEvent(BaseModel):
+    timestamp: datetime
+    type: str       # resync, crc_spike, rate_change, snr_low
+    severity: str   # info, warning, critical
+    message: str
+
+
+class ErrorRatePerHour(BaseModel):
+    timestamp: datetime
+    fec_per_hour: float
+    crc_per_hour: float
+
+
+class DiagnosticsResponse(BaseModel):
+    snr_reserve_down: float
+    snr_reserve_up: float
+    snr_minimum: float
+    current_downstream: int
+    current_upstream: int
+    target_downstream: int
+    target_upstream: int
+    error_rates: list[ErrorRatePerHour]
+    avg_fec_per_hour: float
+    avg_crc_per_hour: float
+    resync_count: int
+    last_resync: datetime | None
+    line_quality_score: int
+    line_quality_label: str
+    alerts: list[AlertEvent]

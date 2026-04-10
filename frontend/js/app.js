@@ -90,12 +90,10 @@ async function loadData() {
 
     currentRangeDays = rangeSize;
 
-    let readings;
-    if (from === to) {
-        readings = await API.getReadings(from);
-    } else {
-        readings = await API.getReadingsRange(from, to);
-    }
+    let [readings, diag] = await Promise.all([
+        from === to ? API.getReadings(from) : API.getReadingsRange(from, to),
+        API.getDiagnostics(from, to),
+    ]);
 
     // For sub-day ranges, filter client-side by timestamp
     if (rangeSize < 1) {
@@ -108,6 +106,7 @@ async function loadData() {
     }
 
     updateCharts(readings);
+    updateDiagnostics(diag);
     updateRangeLabel();
 }
 
