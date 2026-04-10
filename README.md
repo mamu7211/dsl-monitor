@@ -72,10 +72,38 @@ open http://localhost:8080
 # und starten mit: docker compose -f docker-compose.nas.yml up -d
 ```
 
-`deploy.sh` und `docker-compose.nas.yml` sind in der `.gitignore`, da sie NAS-spezifische Hostnamen/Traefik-Config enthalten. Vorlagen:
+`deploy.sh` ist in der `.gitignore`, da NAS-spezifisch (Hostname + User anpassen).
 
-- `deploy.sh`: scp + ssh docker load (NAS-Hostname + User anpassen)
-- `docker-compose.nas.yml`: wie `docker-compose.yml`, aber mit `image:` statt `build:`, plus optionale Traefik-Labels
+Beispiel `docker-compose.nas.yml` für das NAS (mit optionalem Traefik Reverse-Proxy):
+
+```yaml
+services:
+  fritzbox-monitor:
+    image: ghcr.io/mamu7211/fritzbox-monitor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - FRITZ_IP=${FRITZ_IP:-192.168.178.1}
+      - FRITZ_USER=${FRITZ_USER}
+      - FRITZ_PASSWORD=${FRITZ_PASSWORD}
+      - POLL_INTERVAL_MINUTES=60
+      - TZ=Europe/Berlin
+    restart: unless-stopped
+    # Optional: Traefik Reverse-Proxy
+    # networks:
+    #   - proxy
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.fritzbox-monitor.rule=Host(`dsl.example.lan`)
+    #   - traefik.http.routers.fritzbox-monitor.entrypoints=websecure
+    #   - traefik.http.routers.fritzbox-monitor.tls=true
+    #   - traefik.http.services.fritzbox-monitor.loadbalancer.server.port=8080
+# networks:
+#   proxy:
+#     external: true
+```
 
 ## Konfiguration (.env)
 
