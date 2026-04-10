@@ -165,6 +165,14 @@ data/
 - **FEC vs CRC**: FEC = korrigierte Fehler (normal), CRC = nicht korrigierbare Fehler (kritisch). Steigende CRC-Rate deutet auf Leitungsprobleme.
 - **DLM (Dynamic Line Management)**: Provider-seitige Steuerung des Leitungsprofils. Nach einem Reset startet die Leitung konservativ (hoher SNR-Puffer, niedrigere Rate) und wird über Tage/Wochen aggressiver hochgefahren, solange die Fehlerraten niedrig bleiben.
 
+## Changelog
+
+Siehe [CHANGELOG.md](CHANGELOG.md) für alle Änderungen.
+
+## Lizenz
+
+[MIT](LICENSE)
+
 ---
 
 FRITZ!Box is a registered trademark of AVM GmbH. This project is not affiliated with or endorsed by AVM.
