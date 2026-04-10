@@ -126,6 +126,19 @@ function updateTimeScale(chart) {
     chart.options.scales.x = xConfig;
 }
 
+// Compute delta per hour between consecutive readings, skip resets
+function xyDelta(readings, valueFn) {
+    const points = [];
+    for (let i = 1; i < readings.length; i++) {
+        const prev = readings[i - 1], curr = readings[i];
+        const dt = (new Date(curr.timestamp) - new Date(prev.timestamp)) / 3600000;
+        const delta = valueFn(curr) - valueFn(prev);
+        if (delta < 0 || dt <= 0) continue;
+        points.push({ x: new Date(curr.timestamp).getTime(), y: +(delta / dt).toFixed(1) });
+    }
+    return points;
+}
+
 function updateCharts(readings) {
     getAllCharts().forEach(c => updateTimeScale(c));
 
@@ -157,10 +170,10 @@ function updateCharts(readings) {
 
     errorsChart.data = {
         datasets: [
-            { label: 'FEC Down', data: xy(readings, r => r.downstream_fec), borderColor: '#8b5cf6', borderWidth: 2 },
-            { label: 'CRC Down', data: xy(readings, r => r.downstream_crc), borderColor: '#ec4899', borderWidth: 2 },
-            { label: 'FEC Up', data: xy(readings, r => r.upstream_fec), borderColor: '#8b5cf6', borderWidth: 1, borderDash: [5, 5] },
-            { label: 'CRC Up', data: xy(readings, r => r.upstream_crc), borderColor: '#ec4899', borderWidth: 1, borderDash: [5, 5] },
+            { label: 'FEC Down /h', data: xyDelta(readings, r => r.downstream_fec), borderColor: '#8b5cf6', borderWidth: 2 },
+            { label: 'CRC Down /h', data: xyDelta(readings, r => r.downstream_crc), borderColor: '#ec4899', borderWidth: 2 },
+            { label: 'FEC Up /h', data: xyDelta(readings, r => r.upstream_fec), borderColor: '#8b5cf6', borderWidth: 1, borderDash: [5, 5] },
+            { label: 'CRC Up /h', data: xyDelta(readings, r => r.upstream_crc), borderColor: '#ec4899', borderWidth: 1, borderDash: [5, 5] },
         ]
     };
     errorsChart.update();
@@ -185,8 +198,8 @@ function updateCharts(readings) {
 
     trafficTotalChart.data = {
         datasets: [
-            { label: 'Gesendet', data: xy(readings, r => +(r.total_bytes_sent / 1048576).toFixed(1)), borderColor: '#22c55e', borderWidth: 2 },
-            { label: 'Empfangen', data: xy(readings, r => +(r.total_bytes_received / 1048576).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: 'Gesendet /h', data: xyDelta(readings, r => r.total_bytes_sent / 1048576), borderColor: '#22c55e', borderWidth: 2 },
+            { label: 'Empfangen /h', data: xyDelta(readings, r => r.total_bytes_received / 1048576), borderColor: '#3b82f6', borderWidth: 2 },
         ]
     };
     trafficTotalChart.update();
