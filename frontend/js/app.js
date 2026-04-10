@@ -141,16 +141,16 @@ async function collectNow() {
     }
 }
 
-async function refreshStatus() {
+async function refreshAll() {
     const reading = await API.getStatus();
     updateDashboard(reading);
+    await loadData();
 }
 
 // Init
 document.addEventListener('DOMContentLoaded', async () => {
     initCharts();
     endDate = snapToGrid(now());
-    await refreshStatus();
-    await loadData();
-    setInterval(refreshStatus, 5 * 60 * 1000);
+    await refreshAll();
+    setInterval(refreshAll, 60 * 1000);
 });
