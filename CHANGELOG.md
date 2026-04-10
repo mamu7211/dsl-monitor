@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-04-10
+
+### Added
+- FEC/CRC and traffic charts show delta per hour instead of cumulative values
+- Configurable poll schedule via POLL_CRON cron expression (replaces POLL_INTERVAL_MINUTES)
+- Bilingual documentation (docs/README_de.md, docs/README_en.md)
+- CHANGELOG.md and CLAUDE.md
+
+### Changed
+- POLL_INTERVAL_MINUTES replaced by POLL_CRON (default: `*/15 * * * *`)
+- README in English only, documentation linked with flag icons
+- Renamed project from fritzbox-monitor to dsl-monitor
+
 ## [1.1.0] - 2026-04-10
 
 ### Added
@@ -12,18 +25,15 @@ All notable changes to this project will be documented in this file.
 - Synchronized drag-to-zoom across all charts (chartjs-plugin-zoom)
 - Network monitoring: active hosts, WLAN clients per band, traffic rates, WLAN channel
 - Configurable target rates via TARGET_DOWNSTREAM/TARGET_UPSTREAM env vars
-- Configurable poll schedule via POLL_CRON (cron expression, default: every 15 min)
 - Auto-refresh dashboard and charts every 60 seconds
 - Version display in UI header (from git tags)
 - GitHub Actions CI for building container images on version tags
 - MIT license
 
 ### Changed
-- FEC/CRC and traffic charts show delta per hour instead of cumulative values
 - Chart.js min-max decimation instead of server-side aggregation
 - Range navigation with prev/next chevrons replaces date pickers
 - All status cards consolidated into single header row
-- Renamed from "FritzBox DSL Monitor" to "DSL Monitor"
 - Count only active hosts instead of all registered devices
 - Uptime from WANPPPConnection (actual WAN uptime) instead of DSL info
 

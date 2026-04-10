@@ -4,7 +4,10 @@ Hourly DSL line monitoring via TR-064 API. Web dashboard with time series charts
 
 ![DSL Monitor Dashboard](dashboard.png)
 
-**Documentation:** :de: [Deutsch](docs/README_de.md) | :us: [English](docs/README_en.md)
+## Documentation
+
+- :de: [Deutsch](docs/README_de.md)
+- :gb: [English](docs/README_en.md)
 
 ## Supported Hardware
 
@@ -15,7 +18,8 @@ Hourly DSL line monitoring via TR-064 API. Web dashboard with time series charts
 ```bash
 git clone https://github.com/mamu7211/dsl-monitor.git
 cd dsl-monitor
-cp .env.example .env    # set FRITZ_PASSWORD
+cp .env.example .env    
+# edit .env and set credentials
 ./run.sh                # http://localhost:8080
 ```
 
