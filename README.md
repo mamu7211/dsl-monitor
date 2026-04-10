@@ -2,6 +2,8 @@
 
 Stündliches Monitoring der DSL-Leitungsparameter via TR-064 API. Web-Dashboard mit Verlaufscharts, Diagnostik-Panel und Leitungsqualitäts-Score. Deploybar als Docker-Container auf einem NAS.
 
+![DSL Monitor Dashboard](dashboard.png)
+
 ## Unterstützte Hardware
 
 - **AVM FRITZ!Box** (alle Modelle mit TR-064 Unterstützung, z.B. 7590, 7590 AX, 7530, 7490)
