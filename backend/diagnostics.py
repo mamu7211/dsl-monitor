@@ -33,7 +33,8 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
                 timestamp=curr.timestamp,
                 type="resync",
                 severity="warning",
-                message=f"DSL Resync, vorherige Uptime {prev_uptime_h}h {prev_uptime_m}m",
+                message="resync_msg",
+                params=[f"{prev_uptime_h}h {prev_uptime_m}m"],
             ))
 
         # Rate change detection
@@ -44,7 +45,8 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
                 timestamp=curr.timestamp,
                 type="rate_change",
                 severity="info" if diff > 0 else "warning",
-                message=f"Download {direction}{diff} kbit/s → {curr.downstream_current} kbit/s",
+                message="rate_change_msg",
+                params=[f"{direction}{diff}", str(curr.downstream_current)],
             ))
 
         # Error rates (only if no resync, counters reset on resync)
@@ -67,7 +69,8 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
                         timestamp=curr.timestamp,
                         type="crc_spike",
                         severity="critical" if crc_h > 50 else "warning",
-                        message=f"CRC-Fehlerrate {crc_h:.0f}/h (downstream)",
+                        message="crc_spike_msg",
+                        params=[f"{crc_h:.0f}"],
                     ))
 
         # SNR low alert
@@ -76,7 +79,8 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
                 timestamp=curr.timestamp,
                 type="snr_low",
                 severity="critical" if curr.downstream_snr < SNR_MINIMUM else "warning",
-                message=f"SNR Downstream nur {curr.downstream_snr:.1f} dB",
+                message="snr_low_msg",
+                params=[f"{curr.downstream_snr:.1f}"],
             ))
 
     # Averages
@@ -91,13 +95,13 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
     total_score = max(0, min(100, total_score))
 
     if total_score >= 80:
-        label = "Ausgezeichnet"
+        label = "quality_excellent"
     elif total_score >= 60:
-        label = "Gut"
+        label = "quality_good"
     elif total_score >= 40:
-        label = "Mäßig"
+        label = "quality_fair"
     else:
-        label = "Schlecht"
+        label = "quality_poor"
 
     # Sort alerts newest first, cap at 50
     alerts.sort(key=lambda a: a.timestamp, reverse=True)
@@ -129,6 +133,6 @@ def _empty_response() -> DiagnosticsResponse:
         target_downstream=settings.target_downstream, target_upstream=settings.target_upstream,
         error_rates=[], avg_fec_per_hour=0, avg_crc_per_hour=0,
         resync_count=0, last_resync=None,
-        line_quality_score=0, line_quality_label="Keine Daten",
+        line_quality_score=0, line_quality_label="quality_nodata",
         alerts=[],
     )

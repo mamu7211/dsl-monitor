@@ -56,6 +56,7 @@ class AlertEvent(BaseModel):
     type: str       # resync, crc_spike, rate_change, snr_low
     severity: str   # info, warning, critical
     message: str
+    params: list[str] = []
 
 
 class ErrorRatePerHour(BaseModel):

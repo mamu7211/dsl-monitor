@@ -26,16 +26,7 @@ function updateDiagnostics(diag) {
     arc.setAttribute('stroke', color);
     document.getElementById('diag-score').textContent = score;
 
-    // Translate quality label
-    const labelMap = {
-        'Ausgezeichnet': 'quality_excellent',
-        'Gut': 'quality_good',
-        'Mäßig': 'quality_fair',
-        'Schlecht': 'quality_poor',
-        'Keine Daten': 'quality_nodata',
-    };
-    const labelKey = labelMap[diag.line_quality_label] || 'quality_nodata';
-    document.getElementById('diag-label').textContent = t(labelKey, diag.line_quality_label);
+    document.getElementById('diag-label').textContent = t(diag.line_quality_label);
     document.getElementById('diag-label').style.color = color;
 
     const snrDown = document.getElementById('diag-snr-down');
@@ -72,12 +63,14 @@ function updateDiagnostics(diag) {
     if (diag.alerts.length === 0) {
         alertsList.innerHTML = `<div class="text-slate-500">${t('no_events')}</div>`;
     } else {
-        alertsList.innerHTML = diag.alerts.map(a =>
-            `<div class="flex gap-2 py-1 border-b border-slate-700/50">
+        alertsList.innerHTML = diag.alerts.map(a => {
+            let msg = t(a.message, a.message);
+            (a.params || []).forEach((p, i) => { msg = msg.replace(`{${i}}`, p); });
+            return `<div class="flex gap-2 py-1 border-b border-slate-700/50">
                 ${severityIcon(a.severity)}
                 <span class="text-slate-400 flex-shrink-0">${formatAlertTime(a.timestamp)}</span>
-                <span class="text-slate-200">${a.message}</span>
-            </div>`
-        ).join('');
+                <span class="text-slate-200">${msg}</span>
+            </div>`;
+        }).join('');
     }
 }
