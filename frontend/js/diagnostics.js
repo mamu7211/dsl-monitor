@@ -64,9 +64,6 @@ function updateDiagnostics(diag) {
     document.getElementById('diag-progress-bar').className =
         `h-2 rounded-full transition-all ${pct >= 90 ? 'bg-green-500' : pct >= 70 ? 'bg-blue-500' : 'bg-yellow-500'}`;
 
-    // Update target line in rates chart
-    updateTargetLine(diag.target_downstream);
-
     // Alerts list
     const alertsList = document.getElementById('alerts-list');
     if (diag.alerts.length === 0) {

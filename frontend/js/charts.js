@@ -103,31 +103,7 @@ function resetZoom() {
 function initCharts() {
     const opts = makeChartOptions();
 
-    const ratesOpts = makeChartOptions({
-        plugins: {
-            annotation: {
-                annotations: {
-                    targetLine: {
-                        type: 'line',
-                        yMin: 50000,
-                        yMax: 50000,
-                        borderColor: 'rgba(239, 68, 68, 0.6)',
-                        borderWidth: 2,
-                        borderDash: [6, 4],
-                        label: {
-                            display: true,
-                            content: 'Gebucht',
-                            position: 'start',
-                            color: 'rgba(239, 68, 68, 0.8)',
-                            font: { size: 10 },
-                            backgroundColor: 'transparent',
-                        }
-                    }
-                }
-            }
-        }
-    });
-    ratesChart = new Chart(document.getElementById('chart-rates'), { type: 'line', data: { datasets: [] }, options: ratesOpts });
+    ratesChart = new Chart(document.getElementById('chart-rates'), { type: 'line', data: { datasets: [] }, options: opts });
     snrChart = new Chart(document.getElementById('chart-snr'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
     attenuationChart = new Chart(document.getElementById('chart-attenuation'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
     errorsChart = new Chart(document.getElementById('chart-errors'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
@@ -143,14 +119,6 @@ function initCharts() {
 // Helper to create {x, y} data points
 function xy(readings, yFn) {
     return readings.map(r => ({ x: new Date(r.timestamp).getTime(), y: yFn(r) }));
-}
-
-function updateTargetLine(target) {
-    if (ratesChart && target) {
-        const ann = ratesChart.options.plugins.annotation.annotations.targetLine;
-        ann.yMin = target;
-        ann.yMax = target;
-    }
 }
 
 function updateTimeScale(chart) {
