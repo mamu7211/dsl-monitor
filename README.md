@@ -46,8 +46,8 @@ Stündliches Monitoring der DSL-Leitungsparameter via TR-064 API. Web-Dashboard 
 
 ```bash
 # Repository klonen
-git clone https://github.com/mamu7211/fritzbox-monitor.git
-cd fritzbox-monitor
+git clone https://github.com/mamu7211/dsl-monitor.git
+cd dsl-monitor
 
 # Konfiguration anlegen
 cp .env.example .env
@@ -80,8 +80,8 @@ Beispiel `docker-compose.nas.yml` für das NAS (mit optionalem Traefik Reverse-P
 
 ```yaml
 services:
-  fritzbox-monitor:
-    image: ghcr.io/mamu7211/fritzbox-monitor:latest
+  dsl-monitor:
+    image: ghcr.io/mamu7211/dsl-monitor:latest
     ports:
       - "8080:8080"
     volumes:
@@ -98,10 +98,10 @@ services:
     #   - proxy
     # labels:
     #   - traefik.enable=true
-    #   - traefik.http.routers.fritzbox-monitor.rule=Host(`dsl.example.lan`)
-    #   - traefik.http.routers.fritzbox-monitor.entrypoints=websecure
-    #   - traefik.http.routers.fritzbox-monitor.tls=true
-    #   - traefik.http.services.fritzbox-monitor.loadbalancer.server.port=8080
+    #   - traefik.http.routers.dsl-monitor.rule=Host(`dsl.example.lan`)
+    #   - traefik.http.routers.dsl-monitor.entrypoints=websecure
+    #   - traefik.http.routers.dsl-monitor.tls=true
+    #   - traefik.http.services.dsl-monitor.loadbalancer.server.port=8080
 # networks:
 #   proxy:
 #     external: true

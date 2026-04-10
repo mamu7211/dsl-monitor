@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-IMAGE="ghcr.io/mamu7211/fritzbox-monitor:latest"
-TAR="fritzbox-monitor.tar"
+IMAGE="ghcr.io/mamu7211/dsl-monitor:latest"
+TAR="dsl-monitor.tar"
 
 VERSION=$(git describe --tags --always 2>/dev/null || echo "dev")
 
