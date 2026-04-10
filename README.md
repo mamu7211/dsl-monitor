@@ -1,8 +1,10 @@
-# FritzBox DSL Monitor
+# DSL Monitor
 
-Stündliches Monitoring der DSL-Leitungsparameter einer FritzBox 7590 (AX) via TR-064 API. Entstanden nach einem DLM-Reset (April 2026), um die Entwicklung der Leitungsparameter über Tage/Wochen/Monate zu verfolgen.
+Stündliches Monitoring der DSL-Leitungsparameter via TR-064 API. Web-Dashboard mit Verlaufscharts, Diagnostik-Panel und Leitungsqualitäts-Score. Deploybar als Docker-Container auf einem NAS.
 
-Web-Dashboard mit Verlaufscharts, deploybar als Docker-Container auf einem NAS.
+## Unterstützte Hardware
+
+- **AVM FRITZ!Box** (alle Modelle mit TR-064 Unterstützung, z.B. 7590, 7590 AX, 7530, 7490)
 
 ## Features
 
@@ -161,4 +163,4 @@ data/
 
 ---
 
-FRITZ!Box is a registered trademark of AVM GmbH. This project is not affiliated with AVM.
+FRITZ!Box is a registered trademark of AVM GmbH. This project is not affiliated with or endorsed by AVM.

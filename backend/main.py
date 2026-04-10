@@ -67,6 +67,6 @@ async def lifespan(app: FastAPI):
     logger.info("Scheduler stopped")
 
 
-app = FastAPI(title="FritzBox DSL Monitor", lifespan=lifespan)
+app = FastAPI(title="DSL Monitor", lifespan=lifespan)
 app.include_router(router)
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
