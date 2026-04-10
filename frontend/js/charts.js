@@ -131,10 +131,10 @@ function updateCharts(readings) {
 
     ratesChart.data = {
         datasets: [
-            { label: 'Download aktuell', data: xy(readings, r => r.downstream_current), borderColor: '#3b82f6', borderWidth: 2 },
-            { label: 'Download max', data: xy(readings, r => r.downstream_max), borderColor: '#3b82f6', borderWidth: 1, borderDash: [5, 5] },
-            { label: 'Upload aktuell', data: xy(readings, r => r.upstream_current), borderColor: '#22c55e', borderWidth: 2 },
-            { label: 'Upload max', data: xy(readings, r => r.upstream_max), borderColor: '#22c55e', borderWidth: 1, borderDash: [5, 5] },
+            { label: 'Down aktuell', data: xy(readings, r => r.downstream_current), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: 'Down max', data: xy(readings, r => r.downstream_max), borderColor: '#3b82f6', borderWidth: 1, borderDash: [5, 5] },
+            { label: 'Up aktuell', data: xy(readings, r => r.upstream_current), borderColor: '#22c55e', borderWidth: 2 },
+            { label: 'Up max', data: xy(readings, r => r.upstream_max), borderColor: '#22c55e', borderWidth: 1, borderDash: [5, 5] },
         ]
     };
     ratesChart.update();
