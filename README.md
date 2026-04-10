@@ -158,3 +158,7 @@ data/
 - **TR-064**: SOAP-basiertes Protokoll der FritzBox. `fritzconnection` abstrahiert die Aufrufe. Wichtig: SNR/Attenuation-Werte kommen als Zehntel-dB (z.B. 350 = 35.0 dB).
 - **FEC vs CRC**: FEC = korrigierte Fehler (normal), CRC = nicht korrigierbare Fehler (kritisch). Steigende CRC-Rate deutet auf Leitungsprobleme.
 - **DLM (Dynamic Line Management)**: Provider-seitige Steuerung des Leitungsprofils. Nach einem Reset startet die Leitung konservativ (hoher SNR-Puffer, niedrigere Rate) und wird über Tage/Wochen aggressiver hochgefahren, solange die Fehlerraten niedrig bleiben.
+
+---
+
+FRITZ!Box is a registered trademark of AVM GmbH. This project is not affiliated with AVM.
