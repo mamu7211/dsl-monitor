@@ -178,20 +178,14 @@
         <!-- Right: Glossar -->
         <div class="card p-4 text-xs text-slate-300 overflow-y-auto" style="max-height:240px">
             <h2 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Glossar</h2>
-            <dl class="space-y-2">
-                <dt class="font-bold text-slate-200">SNR (Störabstandsmarge)</dt>
-                <dd class="text-slate-400">Abstand zwischen Nutzsignal und Rauschen in dB. Höher = besser. Minimum ~6 dB für stabile Verbindung. DLM tauscht SNR-Reserve gegen höhere Sync-Rate.</dd>
-                <dt class="font-bold text-slate-200">Leitungsdämpfung</dt>
-                <dd class="text-slate-400">Signalverlust auf der Kupferleitung in dB. Abhängig von Leitungslänge und -qualität. Ändert sich kaum, Anstieg deutet auf physischen Defekt.</dd>
-                <dt class="font-bold text-slate-200">FEC (Forward Error Correction)</dt>
-                <dd class="text-slate-400">Automatisch korrigierte Übertragungsfehler. Viele FEC sind normal. Erst starker Anstieg pro Stunde zeigt Leitungsstress.</dd>
-                <dt class="font-bold text-slate-200">CRC (Cyclic Redundancy Check)</dt>
-                <dd class="text-slate-400">Nicht korrigierbare Fehler — die kritischen. Verursachen Paketverlust und Resyncs. CRC &gt; 0/h ist ein Warnsignal.</dd>
-                <dt class="font-bold text-slate-200">DLM (Dynamic Line Management)</dt>
-                <dd class="text-slate-400">Telekom-seitige Profilsteuerung. Nach Reset startet konservativ (hohe SNR, niedrige Rate) und erhöht schrittweise über Tage/Wochen.</dd>
-                <dt class="font-bold text-slate-200">Resync</dt>
-                <dd class="text-slate-400">Neuaushandlung der DSL-Verbindung. Erkennbar am Uptime-Reset. Tägliche Zwangstrennung (~24h) ist normal, häufigere Resyncs deuten auf Probleme.</dd>
-            </dl>
+            <div class="space-y-1">
+                <details><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">SNR (Störabstandsmarge)</summary><p class="text-slate-400 mt-1 ml-3">Abstand zwischen Nutzsignal und Rauschen in dB. Höher = besser. Minimum ~6 dB für stabile Verbindung. DLM tauscht SNR-Reserve gegen höhere Sync-Rate.</p></details>
+                <details><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">Leitungsdämpfung</summary><p class="text-slate-400 mt-1 ml-3">Signalverlust auf der Kupferleitung in dB. Abhängig von Leitungslänge und -qualität. Ändert sich kaum, Anstieg deutet auf physischen Defekt.</p></details>
+                <details><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">FEC (Forward Error Correction)</summary><p class="text-slate-400 mt-1 ml-3">Automatisch korrigierte Übertragungsfehler. Viele FEC sind normal. Erst starker Anstieg pro Stunde zeigt Leitungsstress.</p></details>
+                <details><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">CRC (Cyclic Redundancy Check)</summary><p class="text-slate-400 mt-1 ml-3">Nicht korrigierbare Fehler — die kritischen. Verursachen Paketverlust und Resyncs. CRC &gt; 0/h ist ein Warnsignal.</p></details>
+                <details><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">DLM (Dynamic Line Management)</summary><p class="text-slate-400 mt-1 ml-3">Telekom-seitige Profilsteuerung. Nach Reset startet konservativ (hohe SNR, niedrige Rate) und erhöht schrittweise über Tage/Wochen.</p></details>
+                <details><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">Resync</summary><p class="text-slate-400 mt-1 ml-3">Neuaushandlung der DSL-Verbindung. Erkennbar am Uptime-Reset. Tägliche Zwangstrennung (~24h) ist normal, häufigere Resyncs deuten auf Probleme.</p></details>
+            </div>
         </div>
     </div>
 
