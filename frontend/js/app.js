@@ -130,8 +130,7 @@ function navForward() {
 }
 
 function navToday() {
-    endDate = snapToGrid(now());
-    loadData();
+    setRange(1);
 }
 
 async function collectNow() {
