@@ -116,7 +116,7 @@ function initCharts() {
                         borderDash: [6, 4],
                         label: {
                             display: true,
-                            content: 'Ziel 50 Mbit/s',
+                            content: 'Gebucht',
                             position: 'start',
                             color: 'rgba(239, 68, 68, 0.8)',
                             font: { size: 10 },
@@ -143,6 +143,14 @@ function initCharts() {
 // Helper to create {x, y} data points
 function xy(readings, yFn) {
     return readings.map(r => ({ x: new Date(r.timestamp).getTime(), y: yFn(r) }));
+}
+
+function updateTargetLine(target) {
+    if (ratesChart && target) {
+        const ann = ratesChart.options.plugins.annotation.annotations.targetLine;
+        ann.yMin = target;
+        ann.yMax = target;
+    }
 }
 
 function updateTimeScale(chart) {

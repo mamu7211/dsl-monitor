@@ -40,7 +40,7 @@ function updateDiagnostics(diag) {
 
     // Rates
     document.getElementById('diag-rate').textContent = `${(diag.current_downstream / 1000).toFixed(1)} Mbit/s`;
-    document.getElementById('diag-target').textContent = `${(diag.target_downstream / 1000).toFixed(0)} Mbit/s`;
+    document.getElementById('diag-target').textContent = `${(diag.target_downstream / 1000).toFixed(0)} Mbit/s (gebucht)`;
 
     // Error rates
     const fecEl = document.getElementById('diag-fec');
@@ -63,6 +63,9 @@ function updateDiagnostics(diag) {
     document.getElementById('diag-progress-bar').style.width = `${pct}%`;
     document.getElementById('diag-progress-bar').className =
         `h-2 rounded-full transition-all ${pct >= 90 ? 'bg-green-500' : pct >= 70 ? 'bg-blue-500' : 'bg-yellow-500'}`;
+
+    // Update target line in rates chart
+    updateTargetLine(diag.target_downstream);
 
     // Alerts list
     const alertsList = document.getElementById('alerts-list');

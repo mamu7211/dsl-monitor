@@ -1,8 +1,7 @@
+from backend.config import settings
 from backend.models import AlertEvent, DiagnosticsResponse, DSLReading, ErrorRatePerHour
 
 SNR_MINIMUM = 6.0
-TARGET_DOWN = 50000
-TARGET_UP = 28000
 
 
 def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
@@ -110,8 +109,8 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
         snr_minimum=SNR_MINIMUM,
         current_downstream=last.downstream_current,
         current_upstream=last.upstream_current,
-        target_downstream=TARGET_DOWN,
-        target_upstream=TARGET_UP,
+        target_downstream=settings.target_downstream,
+        target_upstream=settings.target_upstream,
         error_rates=error_rates,
         avg_fec_per_hour=round(avg_fec, 1),
         avg_crc_per_hour=round(avg_crc, 1),
@@ -127,7 +126,7 @@ def _empty_response() -> DiagnosticsResponse:
     return DiagnosticsResponse(
         snr_reserve_down=0, snr_reserve_up=0, snr_minimum=SNR_MINIMUM,
         current_downstream=0, current_upstream=0,
-        target_downstream=TARGET_DOWN, target_upstream=TARGET_UP,
+        target_downstream=settings.target_downstream, target_upstream=settings.target_upstream,
         error_rates=[], avg_fec_per_hour=0, avg_crc_per_hour=0,
         resync_count=0, last_resync=None,
         line_quality_score=0, line_quality_label="Keine Daten",
