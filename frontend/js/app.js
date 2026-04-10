@@ -151,6 +151,9 @@ async function refreshAll() {
 document.addEventListener('DOMContentLoaded', async () => {
     initCharts();
     endDate = snapToGrid(now());
+    fetch('/api/health').then(r => r.json()).then(d => {
+        document.getElementById('app-version').textContent = d.version !== 'dev' ? `v${d.version}` : '';
+    }).catch(() => {});
     await refreshAll();
     setInterval(refreshAll, 60 * 1000);
 });
