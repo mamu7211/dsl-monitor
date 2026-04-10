@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-04-10
+
+### Added
+- i18n support with German and English translations (78 keys)
+- Language toggle via flag icons (DE/GB), auto-detects browser language
+- Persisted language selection in localStorage
+
+### Changed
+- All UI text translatable via JSON dictionaries (frontend/lang/)
+- Backend sends i18n keys instead of hardcoded German labels
+- Alert messages use parameterized translation keys
+
 ## [1.2.1] - 2026-04-10
 
 ### Changed
