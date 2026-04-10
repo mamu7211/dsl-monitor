@@ -1,6 +1,6 @@
 # FritzBox DSL Monitor
 
-Stündliches Monitoring der DSL-Leitungsparameter einer FritzBox 7590 (AX) via TR-064 API. Entstanden nach einem Telekom DLM-Reset (April 2026), um die Entwicklung der Leitungsparameter über Tage/Wochen/Monate zu verfolgen.
+Stündliches Monitoring der DSL-Leitungsparameter einer FritzBox 7590 (AX) via TR-064 API. Entstanden nach einem DLM-Reset (April 2026), um die Entwicklung der Leitungsparameter über Tage/Wochen/Monate zu verfolgen.
 
 Web-Dashboard mit Verlaufscharts, deploybar als Docker-Container auf einem NAS.
 
@@ -129,4 +129,4 @@ data/
 
 - **TR-064**: SOAP-basiertes Protokoll der FritzBox. `fritzconnection` abstrahiert die Aufrufe. Wichtig: SNR/Attenuation-Werte kommen als Zehntel-dB (z.B. 350 = 35.0 dB).
 - **FEC vs CRC**: FEC = korrigierte Fehler (normal), CRC = nicht korrigierbare Fehler (kritisch). Steigende CRC-Rate deutet auf Leitungsprobleme.
-- **DLM (Dynamic Line Management)**: Telekom-seitige Steuerung des Leitungsprofils. Nach einem Reset startet die Leitung konservativ (hoher SNR-Puffer, niedrigere Rate) und wird über Tage/Wochen aggressiver hochgefahren, solange die Fehlerraten niedrig bleiben.
+- **DLM (Dynamic Line Management)**: Provider-seitige Steuerung des Leitungsprofils. Nach einem Reset startet die Leitung konservativ (hoher SNR-Puffer, niedrigere Rate) und wird über Tage/Wochen aggressiver hochgefahren, solange die Fehlerraten niedrig bleiben.
