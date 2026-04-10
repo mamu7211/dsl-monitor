@@ -13,6 +13,8 @@
         body { background: #0f172a; color: #e2e8f0; }
         .card { background: #1e293b; border-radius: 0.75rem; }
         .chart-wrap { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .lang-btn { cursor: pointer; transition: opacity 0.2s; }
+        .lang-btn:hover { opacity: 1 !important; }
     </style>
 </head>
 <body class="h-screen flex flex-col p-4 md:p-8 overflow-hidden">
@@ -20,66 +22,71 @@
         <div class="flex flex-col">
             <h1 class="text-2xl font-bold text-white">DSL Monitor <span id="app-version" class="text-xs font-normal text-slate-500"></span></h1>
             <p id="last-update" class="text-sm text-slate-400"></p>
-            <a href="https://github.com/mamu7211/dsl-monitor" target="_blank" class="text-slate-500 hover:text-slate-300 mt-0.5 inline-flex items-center gap-1 text-xs">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                mamu7211/dsl-monitor
-            </a>
+            <div class="flex items-center gap-2 mt-0.5">
+                <a href="https://github.com/mamu7211/dsl-monitor" target="_blank" class="text-slate-500 hover:text-slate-300 inline-flex items-center gap-1 text-xs">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    mamu7211/dsl-monitor
+                </a>
+                <span class="text-slate-600">|</span>
+                <span class="lang-btn text-xs" data-lang="de" onclick="setLang('de')">&#127465;&#127466;</span>
+                <span class="lang-btn text-xs" data-lang="en" onclick="setLang('en')">&#127468;&#127463;</span>
+            </div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">Status</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="status">Status</div>
             <div class="flex-1 flex flex-col justify-center">
                 <div id="card-status" class="text-sm font-bold">--</div>
                 <div id="card-wan-status" class="text-sm font-bold">--</div>
             </div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">Uptime</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="uptime">Uptime</div>
             <div class="flex-1 flex items-center">
                 <div id="card-uptime" class="text-lg font-bold">--</div>
             </div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">Download</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="download">Download</div>
             <div class="flex-1 flex items-center">
                 <div id="card-down" class="text-lg font-bold">--</div>
             </div>
             <div id="card-down-max" class="text-xs text-slate-400 mt-auto"></div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">Upload</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="upload">Upload</div>
             <div class="flex-1 flex items-center">
                 <div id="card-up" class="text-lg font-bold">--</div>
             </div>
             <div id="card-up-max" class="text-xs text-slate-400 mt-auto"></div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">SNR</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="snr">SNR</div>
             <div class="flex-1 flex flex-col justify-center">
                 <div id="card-snr-down" class="text-sm font-bold">--</div>
                 <div id="card-snr-up" class="text-sm font-bold">--</div>
             </div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">Dämpfung</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="attenuation">Dämpfung</div>
             <div class="flex-1 flex flex-col justify-center">
                 <div id="card-att-down" class="text-sm font-bold">--</div>
                 <div id="card-att-up" class="text-sm font-bold">--</div>
             </div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">Externe IP</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="external_ip">Externe IP</div>
             <div class="flex-1 flex items-center">
                 <div id="card-external-ip" class="text-sm font-bold break-all">--</div>
             </div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">DNS</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="dns">DNS</div>
             <div class="flex-1 flex flex-col justify-center">
                 <div id="card-dns" class="text-xs font-bold break-all">--</div>
             </div>
         </div>
         <div class="card px-4 py-2 flex flex-col">
-            <div class="text-xs text-slate-400 uppercase tracking-wide">WLAN</div>
+            <div class="text-xs text-slate-400 uppercase tracking-wide" data-i18n="wlan">WLAN</div>
             <div class="flex-1 flex flex-col justify-center">
                 <div id="card-wlan-info" class="text-xs font-bold">--</div>
             </div>
@@ -102,15 +109,14 @@
             </div>
         </div>
         <div class="flex flex-col gap-2">
-            <button onclick="collectNow()" class="card px-4 py-2 bg-green-700 hover:bg-green-600 text-xs font-bold uppercase tracking-wide flex items-center justify-center">Messen</button>
-            <button onclick="navToday()" class="card px-4 py-2 bg-blue-600 hover:bg-blue-500 text-xs font-bold uppercase tracking-wide flex items-center justify-center">Heute</button>
-            <button onclick="resetZoom()" class="card px-4 py-2 bg-slate-600 hover:bg-slate-500 text-xs font-bold uppercase tracking-wide flex items-center justify-center">Zoom Reset</button>
+            <button onclick="collectNow()" class="card px-4 py-2 bg-green-700 hover:bg-green-600 text-xs font-bold uppercase tracking-wide flex items-center justify-center" data-i18n="btn_measure">Messen</button>
+            <button onclick="navToday()" class="card px-4 py-2 bg-blue-600 hover:bg-blue-500 text-xs font-bold uppercase tracking-wide flex items-center justify-center" data-i18n="btn_today">Heute</button>
+            <button onclick="resetZoom()" class="card px-4 py-2 bg-slate-600 hover:bg-slate-500 text-xs font-bold uppercase tracking-wide flex items-center justify-center" data-i18n="btn_zoom_reset">Zoom Reset</button>
         </div>
     </header>
 
     <!-- Diagnostics Panels -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <!-- Left: Diagnostics -->
         <div class="card p-4">
             <div class="flex items-center gap-3 mb-3">
                 <div id="diag-score-ring" class="relative w-14 h-14 flex-shrink-0">
@@ -124,24 +130,24 @@
                 </div>
                 <div>
                     <div id="diag-label" class="text-lg font-bold text-white">--</div>
-                    <div class="text-xs text-slate-400">Leitungsqualität</div>
+                    <div class="text-xs text-slate-400" data-i18n="line_quality">Leitungsqualität</div>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
                 <div>
-                    <span class="text-slate-400">SNR Reserve ↓</span>
+                    <span class="text-slate-400" data-i18n="snr_reserve_down">SNR Reserve ↓</span>
                     <span id="diag-snr-down" class="float-right font-bold">--</span>
                 </div>
                 <div>
-                    <span class="text-slate-400">SNR Reserve ↑</span>
+                    <span class="text-slate-400" data-i18n="snr_reserve_up">SNR Reserve ↑</span>
                     <span id="diag-snr-up" class="float-right font-bold">--</span>
                 </div>
                 <div>
-                    <span class="text-slate-400">Download</span>
+                    <span class="text-slate-400" data-i18n="download">Download</span>
                     <span id="diag-rate" class="float-right font-bold">--</span>
                 </div>
                 <div>
-                    <span class="text-slate-400">Gebucht</span>
+                    <span class="text-slate-400" data-i18n="contracted">Gebucht</span>
                     <span id="diag-target" class="float-right font-bold text-slate-400">--</span>
                 </div>
                 <div>
@@ -157,14 +163,13 @@
                     <span id="diag-resyncs" class="float-right font-bold">--</span>
                 </div>
                 <div>
-                    <span class="text-slate-400">Letzter Resync</span>
+                    <span class="text-slate-400" data-i18n="last_resync">Letzter Resync</span>
                     <span id="diag-last-resync" class="float-right font-bold">--</span>
                 </div>
             </div>
-            <!-- Rate progress bar -->
             <div class="mt-3">
                 <div class="flex justify-between text-xs text-slate-400 mb-1">
-                    <span>Profilqualität</span>
+                    <span data-i18n="profile_quality">Profilqualität</span>
                     <span id="diag-progress-pct">--%</span>
                 </div>
                 <div class="w-full bg-slate-700 rounded-full h-2">
@@ -172,24 +177,22 @@
                 </div>
             </div>
         </div>
-        <!-- Right: Alerts + Target Chart -->
         <div class="card p-4 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Ereignisse</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide" data-i18n="events">Ereignisse</h2>
             <div id="alerts-list" class="flex-1 overflow-y-auto space-y-1 text-xs" style="max-height:180px">
-                <div class="text-slate-500">Keine Ereignisse</div>
+                <div class="text-slate-500" data-i18n="no_events">Keine Ereignisse</div>
             </div>
         </div>
-        <!-- Right: Glossar -->
         <div class="card p-4 text-xs text-slate-300 overflow-y-auto" style="max-height:240px">
-            <h2 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Glossar</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide" data-i18n="glossary">Glossar</h2>
             <div class="space-y-1">
-                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">SNR (Störabstandsmarge)</summary><p class="text-slate-400 mt-1 ml-3">Abstand zwischen Nutzsignal und Rauschen in dB. Höher = besser. Minimum ~6 dB für stabile Verbindung. DLM tauscht SNR-Reserve gegen höhere Sync-Rate.</p></details>
-                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">Leitungsdämpfung</summary><p class="text-slate-400 mt-1 ml-3">Signalverlust auf der Kupferleitung in dB. Abhängig von Leitungslänge und -qualität. Ändert sich kaum, Anstieg deutet auf physischen Defekt.</p></details>
-                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">FEC (Forward Error Correction)</summary><p class="text-slate-400 mt-1 ml-3">Automatisch korrigierte Übertragungsfehler. Viele FEC sind normal. Erst starker Anstieg pro Stunde zeigt Leitungsstress.</p></details>
-                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">CRC (Cyclic Redundancy Check)</summary><p class="text-slate-400 mt-1 ml-3">Nicht korrigierbare Fehler — die kritischen. Verursachen Paketverlust und Resyncs. CRC &gt; 0/h ist ein Warnsignal.</p></details>
-                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">DLM (Dynamic Line Management)</summary><p class="text-slate-400 mt-1 ml-3">Provider-seitige Profilsteuerung. Nach Reset startet konservativ (hohe SNR, niedrige Rate) und erhöht schrittweise über Tage/Wochen.</p></details>
-                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">Resync</summary><p class="text-slate-400 mt-1 ml-3">Neuaushandlung der DSL-Verbindung. Erkennbar am Uptime-Reset. Tägliche Zwangstrennung (~24h) ist normal, häufigere Resyncs deuten auf Probleme.</p></details>
-                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white">Profilqualität</summary><p class="text-slate-400 mt-1 ml-3">Verhältnis der aktuellen Sync-Rate zur gebuchten Bandbreite in Prozent. Zeigt wie weit DLM das Leitungsprofil bereits hochgefahren hat. 100% = volle gebuchte Geschwindigkeit erreicht.</p></details>
+                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white" data-i18n="glossary_snr_title">SNR (Störabstandsmarge)</summary><p class="text-slate-400 mt-1 ml-3" data-i18n="glossary_snr_text">Abstand zwischen Nutzsignal und Rauschen in dB.</p></details>
+                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white" data-i18n="glossary_att_title">Leitungsdämpfung</summary><p class="text-slate-400 mt-1 ml-3" data-i18n="glossary_att_text">Signalverlust auf der Kupferleitung in dB.</p></details>
+                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white" data-i18n="glossary_fec_title">FEC (Forward Error Correction)</summary><p class="text-slate-400 mt-1 ml-3" data-i18n="glossary_fec_text">Automatisch korrigierte Übertragungsfehler.</p></details>
+                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white" data-i18n="glossary_crc_title">CRC (Cyclic Redundancy Check)</summary><p class="text-slate-400 mt-1 ml-3" data-i18n="glossary_crc_text">Nicht korrigierbare Fehler.</p></details>
+                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white" data-i18n="glossary_dlm_title">DLM (Dynamic Line Management)</summary><p class="text-slate-400 mt-1 ml-3" data-i18n="glossary_dlm_text">Provider-seitige Profilsteuerung.</p></details>
+                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white" data-i18n="glossary_resync_title">Resync</summary><p class="text-slate-400 mt-1 ml-3" data-i18n="glossary_resync_text">Neuaushandlung der DSL-Verbindung.</p></details>
+                <details name="glossar"><summary class="font-bold text-slate-200 cursor-pointer hover:text-white" data-i18n="glossary_profile_title">Profilqualität</summary><p class="text-slate-400 mt-1 ml-3" data-i18n="glossary_profile_text">Verhältnis der aktuellen Sync-Rate zur gebuchten Bandbreite.</p></details>
             </div>
         </div>
     </div>
@@ -197,39 +200,40 @@
     <!-- Charts -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 flex-1">
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">Datenraten (kbit/s)</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_rates">Datenraten (kbit/s)</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-rates"></canvas></div></div>
         </div>
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">Störabstandsmarge (dB)</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_snr">Störabstandsmarge (dB)</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-snr"></canvas></div></div>
         </div>
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">Leitungsdämpfung (dB)</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_attenuation">Leitungsdämpfung (dB)</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-attenuation"></canvas></div></div>
         </div>
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">FEC / CRC (/h)</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_errors">FEC / CRC (/h)</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-errors"></canvas></div></div>
         </div>
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">Verbundene Clients</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_clients">Verbundene Clients</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-clients"></canvas></div></div>
         </div>
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">Traffic Rate (KB/s)</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_traffic_rate">Traffic Rate (KB/s)</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-traffic-rate"></canvas></div></div>
         </div>
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">Traffic (MB/h)</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_traffic_total">Traffic (MB/h)</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-traffic-total"></canvas></div></div>
         </div>
         <div class="card p-3 flex flex-col">
-            <h2 class="text-xs font-semibold text-slate-400 mb-1">WLAN Kanal</h2>
+            <h2 class="text-xs font-semibold text-slate-400 mb-1" data-i18n="chart_channel">WLAN Kanal</h2>
             <div class="flex-1 relative"><div class="chart-wrap"><canvas id="chart-channel"></canvas></div></div>
         </div>
     </div>
 
+    <script src="js/i18n.js"></script>
     <script src="js/api.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/diagnostics.js"></script>

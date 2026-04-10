@@ -144,70 +144,70 @@ function updateCharts(readings) {
 
     ratesChart.data = {
         datasets: [
-            { label: 'Down aktuell', data: xy(readings, r => r.downstream_current), borderColor: '#3b82f6', borderWidth: 2 },
-            { label: 'Down max', data: xy(readings, r => r.downstream_max), borderColor: '#3b82f6', borderWidth: 1, borderDash: [5, 5] },
-            { label: 'Up aktuell', data: xy(readings, r => r.upstream_current), borderColor: '#22c55e', borderWidth: 2 },
-            { label: 'Up max', data: xy(readings, r => r.upstream_max), borderColor: '#22c55e', borderWidth: 1, borderDash: [5, 5] },
+            { label: t('down_current'), data: xy(readings, r => r.downstream_current), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: t('down_max'), data: xy(readings, r => r.downstream_max), borderColor: '#3b82f6', borderWidth: 1, borderDash: [5, 5] },
+            { label: t('up_current'), data: xy(readings, r => r.upstream_current), borderColor: '#22c55e', borderWidth: 2 },
+            { label: t('up_max'), data: xy(readings, r => r.upstream_max), borderColor: '#22c55e', borderWidth: 1, borderDash: [5, 5] },
         ]
     };
     ratesChart.update();
 
     snrChart.data = {
         datasets: [
-            { label: 'SNR Downstream', data: xy(readings, r => r.downstream_snr), borderColor: '#f59e0b', borderWidth: 2 },
-            { label: 'SNR Upstream', data: xy(readings, r => r.upstream_snr), borderColor: '#ef4444', borderWidth: 2 },
+            { label: t('snr_down'), data: xy(readings, r => r.downstream_snr), borderColor: '#f59e0b', borderWidth: 2 },
+            { label: t('snr_up'), data: xy(readings, r => r.upstream_snr), borderColor: '#ef4444', borderWidth: 2 },
         ]
     };
     snrChart.update();
 
     attenuationChart.data = {
         datasets: [
-            { label: 'Dämpfung Downstream', data: xy(readings, r => r.downstream_attenuation), borderColor: '#14b8a6', borderWidth: 2 },
-            { label: 'Dämpfung Upstream', data: xy(readings, r => r.upstream_attenuation), borderColor: '#f97316', borderWidth: 2 },
+            { label: t('att_down'), data: xy(readings, r => r.downstream_attenuation), borderColor: '#14b8a6', borderWidth: 2 },
+            { label: t('att_up'), data: xy(readings, r => r.upstream_attenuation), borderColor: '#f97316', borderWidth: 2 },
         ]
     };
     attenuationChart.update();
 
     errorsChart.data = {
         datasets: [
-            { label: 'FEC Down /h', data: xyDelta(readings, r => r.downstream_fec), borderColor: '#8b5cf6', borderWidth: 2 },
-            { label: 'CRC Down /h', data: xyDelta(readings, r => r.downstream_crc), borderColor: '#ec4899', borderWidth: 2 },
-            { label: 'FEC Up /h', data: xyDelta(readings, r => r.upstream_fec), borderColor: '#8b5cf6', borderWidth: 1, borderDash: [5, 5] },
-            { label: 'CRC Up /h', data: xyDelta(readings, r => r.upstream_crc), borderColor: '#ec4899', borderWidth: 1, borderDash: [5, 5] },
+            { label: t('fec_down_h'), data: xyDelta(readings, r => r.downstream_fec), borderColor: '#8b5cf6', borderWidth: 2 },
+            { label: t('crc_down_h'), data: xyDelta(readings, r => r.downstream_crc), borderColor: '#ec4899', borderWidth: 2 },
+            { label: t('fec_up_h'), data: xyDelta(readings, r => r.upstream_fec), borderColor: '#8b5cf6', borderWidth: 1, borderDash: [5, 5] },
+            { label: t('crc_up_h'), data: xyDelta(readings, r => r.upstream_crc), borderColor: '#ec4899', borderWidth: 1, borderDash: [5, 5] },
         ]
     };
     errorsChart.update();
 
     clientsChart.data = {
         datasets: [
-            { label: 'LAN/WLAN Gesamt', data: xy(readings, r => r.hosts_total), borderColor: '#3b82f6', borderWidth: 2 },
-            { label: 'WLAN 2.4 GHz', data: xy(readings, r => r.wlan_clients_24ghz), borderColor: '#22c55e', borderWidth: 2 },
-            { label: 'WLAN 5 GHz', data: xy(readings, r => r.wlan_clients_5ghz), borderColor: '#f59e0b', borderWidth: 2 },
-            { label: 'WLAN Gast', data: xy(readings, r => r.wlan_clients_guest), borderColor: '#ef4444', borderWidth: 2 },
+            { label: t('clients_total'), data: xy(readings, r => r.hosts_total), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: t('wlan_24ghz'), data: xy(readings, r => r.wlan_clients_24ghz), borderColor: '#22c55e', borderWidth: 2 },
+            { label: t('wlan_5ghz'), data: xy(readings, r => r.wlan_clients_5ghz), borderColor: '#f59e0b', borderWidth: 2 },
+            { label: t('wlan_guest'), data: xy(readings, r => r.wlan_clients_guest), borderColor: '#ef4444', borderWidth: 2 },
         ]
     };
     clientsChart.update();
 
     trafficRateChart.data = {
         datasets: [
-            { label: 'Senden', data: xy(readings, r => +(r.bytes_send_rate / 1024).toFixed(1)), borderColor: '#22c55e', borderWidth: 2 },
-            { label: 'Empfangen', data: xy(readings, r => +(r.bytes_receive_rate / 1024).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: t('send'), data: xy(readings, r => +(r.bytes_send_rate / 1024).toFixed(1)), borderColor: '#22c55e', borderWidth: 2 },
+            { label: t('receive'), data: xy(readings, r => +(r.bytes_receive_rate / 1024).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2 },
         ]
     };
     trafficRateChart.update();
 
     trafficTotalChart.data = {
         datasets: [
-            { label: 'Gesendet /h', data: xyDelta(readings, r => r.total_bytes_sent / 1048576), borderColor: '#22c55e', borderWidth: 2 },
-            { label: 'Empfangen /h', data: xyDelta(readings, r => r.total_bytes_received / 1048576), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: t('sent_h'), data: xyDelta(readings, r => r.total_bytes_sent / 1048576), borderColor: '#22c55e', borderWidth: 2 },
+            { label: t('received_h'), data: xyDelta(readings, r => r.total_bytes_received / 1048576), borderColor: '#3b82f6', borderWidth: 2 },
         ]
     };
     trafficTotalChart.update();
 
     channelChart.data = {
         datasets: [
-            { label: '2.4 GHz Kanal', data: xy(readings, r => r.wlan_channel_24ghz), borderColor: '#22c55e', borderWidth: 2, stepped: true },
-            { label: '5 GHz Kanal', data: xy(readings, r => r.wlan_channel_5ghz), borderColor: '#3b82f6', borderWidth: 2, stepped: true },
+            { label: t('channel_24ghz'), data: xy(readings, r => r.wlan_channel_24ghz), borderColor: '#22c55e', borderWidth: 2, stepped: true },
+            { label: t('channel_5ghz'), data: xy(readings, r => r.wlan_channel_5ghz), borderColor: '#3b82f6', borderWidth: 2, stepped: true },
         ]
     };
     channelChart.update();

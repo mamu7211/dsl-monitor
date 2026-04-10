@@ -149,6 +149,7 @@ async function refreshAll() {
 
 // Init
 document.addEventListener('DOMContentLoaded', async () => {
+    await initI18n();
     initCharts();
     endDate = snapToGrid(now());
     fetch('/api/health').then(r => r.json()).then(d => {

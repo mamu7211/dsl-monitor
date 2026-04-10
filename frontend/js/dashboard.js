@@ -22,7 +22,6 @@ function statusColor(ok) {
 function updateDashboard(reading) {
     if (!reading) return;
 
-    // Combined status card: DSL + WAN
     const statusEl = document.getElementById('card-status');
     const dslOk = reading.status === 'Up';
     statusEl.textContent = `DSL: ${dslOk ? 'Up' : reading.status}`;
@@ -34,6 +33,7 @@ function updateDashboard(reading) {
     wanEl.className = `text-sm font-bold ${statusColor(wanOk)}`;
 
     document.getElementById('card-uptime').textContent = formatUptime(reading.uptime);
+
     const downEl = document.getElementById('card-down');
     downEl.textContent = `${(reading.downstream_current / 1000).toFixed(1)} Mbit/s`;
     downEl.className = 'text-lg font-bold text-green-400';
@@ -64,5 +64,5 @@ function updateDashboard(reading) {
     document.getElementById('card-wlan-info').style.whiteSpace = 'pre-line';
 
     const ts = new Date(reading.timestamp);
-    document.getElementById('last-update').textContent = `Letztes Update: ${ts.toLocaleString('de-DE')}`;
+    document.getElementById('last-update').textContent = `${t('last_update')}: ${ts.toLocaleString('de-DE')}`;
 }
