@@ -2,6 +2,8 @@
 
 Hourly DSL line monitoring via TR-064 API. Web dashboard with time series charts, diagnostics panel and line quality score. Deployable as a Docker container on a NAS.
 
+> ⚠️ **Personal project, vibe-coded.** This is primarily a tool I built for my own FritzBox to track line quality after a DLM reset. It works for me, but expect bugs and rough edges. Showstoppers and security issues get priority — small visual glitches or code quality concerns may or may not be addressed. See [Discussions](https://github.com/mamu7211/dsl-monitor/discussions) for feedback.
+
 ![DSL Monitor Dashboard](dashboard.png)
 
 ## Documentation
