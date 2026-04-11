@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-04-10
+
+### Changed
+- Custom scrollbar styling matching dark theme
+
 ## [1.3.0] - 2026-04-10
 
 ### Added
