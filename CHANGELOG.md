@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2026-04-10
+
+### Changed
+- Traffic rate chart computes average from cumulative byte counters
+  instead of showing FritzBox's instantaneous snapshot
+- Chart title: "Traffic Rate Ø (KB/s)" to indicate average
+
 ## [1.3.1] - 2026-04-10
 
 ### Changed

@@ -27,7 +27,7 @@
   "chart_attenuation": "Leitungsdämpfung (dB)",
   "chart_errors": "FEC / CRC (/h)",
   "chart_clients": "Verbundene Clients",
-  "chart_traffic_rate": "Traffic Rate (KB/s)",
+  "chart_traffic_rate": "Traffic Rate Ø (KB/s)",
   "chart_traffic_total": "Traffic (MB/h)",
   "chart_channel": "WLAN Kanal",
   "down_current": "Down aktuell",

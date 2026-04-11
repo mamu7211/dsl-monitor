@@ -126,12 +126,14 @@ function updateTimeScale(chart) {
     chart.options.scales.x = xConfig;
 }
 
-// Compute delta per hour between consecutive readings, skip resets
-function xyDelta(readings, valueFn) {
+// Compute delta per time unit between consecutive readings, skip resets
+// unit: 'hour' (default) or 'second'
+function xyDelta(readings, valueFn, unit = 'hour') {
+    const divisor = unit === 'second' ? 1000 : 3600000;
     const points = [];
     for (let i = 1; i < readings.length; i++) {
         const prev = readings[i - 1], curr = readings[i];
-        const dt = (new Date(curr.timestamp) - new Date(prev.timestamp)) / 3600000;
+        const dt = (new Date(curr.timestamp) - new Date(prev.timestamp)) / divisor;
         const delta = valueFn(curr) - valueFn(prev);
         if (delta < 0 || dt <= 0) continue;
         points.push({ x: new Date(curr.timestamp).getTime(), y: +(delta / dt).toFixed(1) });
@@ -190,8 +192,8 @@ function updateCharts(readings) {
 
     trafficRateChart.data = {
         datasets: [
-            { label: t('send'), data: xy(readings, r => +(r.bytes_send_rate / 1024).toFixed(1)), borderColor: '#22c55e', borderWidth: 2 },
-            { label: t('receive'), data: xy(readings, r => +(r.bytes_receive_rate / 1024).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: t('send'), data: xyDelta(readings, r => r.total_bytes_sent / 1024, 'second'), borderColor: '#22c55e', borderWidth: 2 },
+            { label: t('receive'), data: xyDelta(readings, r => r.total_bytes_received / 1024, 'second'), borderColor: '#3b82f6', borderWidth: 2 },
         ]
     };
     trafficRateChart.update();
