@@ -1,5 +1,5 @@
 from backend.config import settings
-from backend.models import AlertEvent, DiagnosticsResponse, DSLReading, ErrorRatePerHour
+from backend.models import AlertEvent, DiagnosticsResponse, DSLReading, ErrorRatePerHour, QualityPoint
 
 SNR_MINIMUM = 6.0
 
@@ -14,8 +14,16 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
 
     alerts: list[AlertEvent] = []
     error_rates: list[ErrorRatePerHour] = []
+    quality_history: list[QualityPoint] = []
     resync_count = 0
     last_resync = None
+
+    # Initial quality point from first reading (SNR only, no error/stability data yet)
+    first_snr_score = min(max(readings[0].downstream_snr - SNR_MINIMUM, 0) / 10.0, 1.0) * 40
+    quality_history.append(QualityPoint(
+        timestamp=readings[0].timestamp,
+        score=int(min(100, first_snr_score + 60)),
+    ))
 
     for i in range(1, len(readings)):
         prev, curr = readings[i - 1], readings[i]
@@ -83,6 +91,17 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
                 params=[f"{curr.downstream_snr:.1f}"],
             ))
 
+        # Quality score for this point (rolling: uses error_rates so far + resync_count so far)
+        snr_reserve_curr = max(curr.downstream_snr - SNR_MINIMUM, 0)
+        snr_pt = min(snr_reserve_curr / 10.0, 1.0) * 40
+        # Use last 10 error rates for CRC component (rolling window)
+        recent = error_rates[-10:] if error_rates else []
+        recent_crc = sum(e.crc_per_hour for e in recent) / len(recent) if recent else 0
+        crc_pt = max(0, 30 - recent_crc * 10)
+        stab_pt = max(0, 30 - resync_count * 10)
+        score_pt = max(0, min(100, int(snr_pt + crc_pt + stab_pt)))
+        quality_history.append(QualityPoint(timestamp=curr.timestamp, score=score_pt))
+
     # Averages
     avg_fec = sum(e.fec_per_hour for e in error_rates) / len(error_rates) if error_rates else 0
     avg_crc = sum(e.crc_per_hour for e in error_rates) / len(error_rates) if error_rates else 0
@@ -122,6 +141,7 @@ def compute_diagnostics(readings: list[DSLReading]) -> DiagnosticsResponse:
         last_resync=last_resync,
         line_quality_score=total_score,
         line_quality_label=label,
+        quality_history=quality_history,
         alerts=alerts,
     )
 
@@ -134,5 +154,6 @@ def _empty_response() -> DiagnosticsResponse:
         error_rates=[], avg_fec_per_hour=0, avg_crc_per_hour=0,
         resync_count=0, last_resync=None,
         line_quality_score=0, line_quality_label="quality_nodata",
+        quality_history=[],
         alerts=[],
     )

@@ -65,6 +65,11 @@ class ErrorRatePerHour(BaseModel):
     crc_per_hour: float
 
 
+class QualityPoint(BaseModel):
+    timestamp: datetime
+    score: int
+
+
 class DiagnosticsResponse(BaseModel):
     snr_reserve_down: float
     snr_reserve_up: float
@@ -80,4 +85,5 @@ class DiagnosticsResponse(BaseModel):
     last_resync: datetime | None
     line_quality_score: int
     line_quality_label: str
+    quality_history: list[QualityPoint]
     alerts: list[AlertEvent]

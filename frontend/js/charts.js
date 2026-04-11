@@ -198,6 +198,7 @@ function updateCharts(readings) {
     profileQualityChart.data = {
         datasets: [
             { label: t('profile_quality_pct'), data: xy(readings, r => +(r.downstream_current / currentTarget * 100).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: t('line_quality_pct'), data: (currentDiag?.quality_history || []).map(q => ({ x: new Date(q.timestamp).getTime(), y: q.score })), borderColor: '#22c55e', borderWidth: 2 },
         ]
     };
     profileQualityChart.update();

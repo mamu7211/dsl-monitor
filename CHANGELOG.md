@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.4] - 2026-04-10
+
+### Added
+- Profile Quality chart now also shows Line Quality score over time
+- Backend computes quality_history with rolling SNR/CRC/stability scores
+
 ## [1.3.3] - 2026-04-10
 
 ### Changed
