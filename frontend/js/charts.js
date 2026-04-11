@@ -73,10 +73,10 @@ function makeChartOptions(overrides) {
     return defaults;
 }
 
-let ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, trafficRateChart, trafficTotalChart, channelChart;
+let ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, profileQualityChart, trafficTotalChart, channelChart;
 
 function getAllCharts() {
-    return [ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, trafficRateChart, trafficTotalChart, channelChart];
+    return [ratesChart, snrChart, attenuationChart, errorsChart, clientsChart, profileQualityChart, trafficTotalChart, channelChart];
 }
 
 let _syncing = false;
@@ -108,7 +108,12 @@ function initCharts() {
     attenuationChart = new Chart(document.getElementById('chart-attenuation'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
     errorsChart = new Chart(document.getElementById('chart-errors'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
     clientsChart = new Chart(document.getElementById('chart-clients'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
-    trafficRateChart = new Chart(document.getElementById('chart-traffic-rate'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
+    profileQualityChart = new Chart(document.getElementById('chart-profile-quality'), {
+        type: 'line', data: { datasets: [] },
+        options: makeChartOptions({
+            scales: { y: { beginAtZero: true, suggestedMax: 110, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } }
+        })
+    });
     trafficTotalChart = new Chart(document.getElementById('chart-traffic-total'), { type: 'line', data: { datasets: [] }, options: makeChartOptions() });
     channelChart = new Chart(document.getElementById('chart-channel'), {
         type: 'line', data: { datasets: [] },
@@ -190,13 +195,12 @@ function updateCharts(readings) {
     };
     clientsChart.update();
 
-    trafficRateChart.data = {
+    profileQualityChart.data = {
         datasets: [
-            { label: t('send'), data: xyDelta(readings, r => r.total_bytes_sent / 1024, 'second'), borderColor: '#22c55e', borderWidth: 2 },
-            { label: t('receive'), data: xyDelta(readings, r => r.total_bytes_received / 1024, 'second'), borderColor: '#3b82f6', borderWidth: 2 },
+            { label: t('profile_quality_pct'), data: xy(readings, r => +(r.downstream_current / currentTarget * 100).toFixed(1)), borderColor: '#3b82f6', borderWidth: 2 },
         ]
     };
-    trafficRateChart.update();
+    profileQualityChart.update();
 
     trafficTotalChart.data = {
         datasets: [

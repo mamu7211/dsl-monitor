@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.3] - 2026-04-10
+
+### Changed
+- Replace redundant Traffic Rate chart with Profile Quality chart
+  showing DLM progress over time as percentage of contracted rate
+
 ## [1.3.2] - 2026-04-10
 
 ### Changed

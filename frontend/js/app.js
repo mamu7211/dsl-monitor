@@ -1,6 +1,7 @@
 // State
 let rangeSize = parseFloat(localStorage.getItem('rangeSize') || '1');
 let endDate = new Date();
+let currentTarget = 50000;
 
 function toISODate(d) {
     const y = d.getFullYear();
@@ -94,6 +95,8 @@ async function loadData() {
         from === to ? API.getReadings(from) : API.getReadingsRange(from, to),
         API.getDiagnostics(from, to),
     ]);
+
+    if (diag) currentTarget = diag.target_downstream || 50000;
 
     // For sub-day ranges, filter client-side by timestamp
     if (rangeSize < 1) {
